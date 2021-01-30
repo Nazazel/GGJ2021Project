@@ -8,6 +8,8 @@ TagManager:
   - Hide
   - Ground
   - hurtbox
+  - checkpoint
+  - pickup
   layers:
   - Default
   - TransparentFX

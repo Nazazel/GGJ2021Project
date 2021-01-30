@@ -26,7 +26,7 @@ public class CharacterController : MonoBehaviour
     public bool m_FacingRight = true;
     private int m_AirJumpsLeft;
     private Vector3 m_Velocity = Vector3.zero;
-
+    private GameObject light;
     [HideInInspector] public Rigidbody2D m_RigidBody2D;
 
     public Transform GroundCheck { get => m_GroundCheck; set => m_GroundCheck = value; }
@@ -91,6 +91,9 @@ public class CharacterController : MonoBehaviour
         }
     }
 
+    public void SetLight(GameObject flash) { light = flash; }
+
+
     //Enhances the Jump by adding gravity when falling, short hop, and full hop
     void JumpGravity(bool jump)
     {
@@ -111,6 +114,7 @@ public class CharacterController : MonoBehaviour
         Vector2 localScale = gameObject.transform.localScale;
         localScale.x *= -1;
         transform.localScale = localScale;
+        light.transform.localScale = localScale;
     }
 
     void OnTriggerEnter2D(Collider2D collide)

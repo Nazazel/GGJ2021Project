@@ -1,7 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal.VR;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Experimental.Rendering.Universal; //2019 VERSIONS
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -18,6 +21,8 @@ public class PlayerMovement : MonoBehaviour
     public Transform respawnPoint;
     public float respawnTime;
     public bool hidden;
+    
+
 
 
     private Rigidbody2D rb2d;
@@ -26,25 +31,37 @@ public class PlayerMovement : MonoBehaviour
     private float jumpDistance;
     private float duration;
     private SpriteRenderer SR;
+    public float battery ;
+    public float currentBattery;
+    private float batteryCharge=100f;
+    public float LightCost;
+    private bool keyAlternate;
+    public UIManager ui;
+
+    public int collectableAmount;
+    private int CurrentCollectables;
     void Awake()
     {
         controller = GetComponent<CharacterController>();
         rb2d = GetComponent<Rigidbody2D>();
         respawning = false;
         jumpDistance = transform.position.y;
-        StartCoroutine("respawn");
         SR = GetComponent<SpriteRenderer>();
+        controller.SetLight(flashLight);
+        keyAlternate = false;
+        currentBattery = battery;
+        flashLight.SetActive(false);
+
     }
 
-    IEnumerator WaitForSoundReset()
-    {
-        yield return new WaitForSeconds(duration);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
 
     // Update is called once per frame
     void Update()
     {
+
+        if (CurrentCollectables == collectableAmount) { Win(); }
+
+        flashLight.transform.position = transform.position;
         horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
         if (Input.GetButtonDown("Jump"))
         {
@@ -66,6 +83,32 @@ public class PlayerMovement : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.DownArrow)) { Hide(); }
             else if(Input.GetKeyUp(KeyCode.DownArrow)) { SR.enabled = true; }
         }
+
+        if (Input.GetKeyDown(KeyCode.Q) && keyAlternate == false && !flashLight.active)
+        {
+            keyAlternate = true;
+            ChargeBattery();
+
+        }
+        else if (Input.GetKeyDown(KeyCode.E) && keyAlternate == true && !flashLight.active)
+        {
+            keyAlternate = false;
+            ChargeBattery();
+
+        }
+
+        if (currentBattery <= 0 && flashLight.active) { LightSwitch(); }
+        if (flashLight.active) {
+            currentBattery -= LightCost;
+            if (currentBattery > 10)
+                flashLight.GetComponent<Light2D>().intensity = (currentBattery / 100);
+            else
+                flashLight.GetComponent<Light2D>().intensity = .1f;
+
+        }
+
+        ui.setAmount(currentBattery);
+
     }
 
     // FixedUpdate is called multiple times per x amount of frames
@@ -73,21 +116,56 @@ public class PlayerMovement : MonoBehaviour
     {
         controller.Move(horizontalMove * Time.fixedDeltaTime, jump);
         jump = false;
+
+        
     }
 
+
+    private void Win() 
+    {
+        Debug.Log("win");
+    }
+
+    public void ChargeBattery() {
+        if (currentBattery + batteryCharge > battery) { currentBattery = battery; }
+        else {
+            currentBattery += batteryCharge;
+        }
+    
+    }
 
     #region  triggers
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log(other.tag);
         if (other.tag == "hurtbox")
         {
-            death();
+            if (other.gameObject.GetComponent<EyeTrap>() != null) {
+                if (!other.gameObject.GetComponent<EyeTrap>().activated) {
+                    other.gameObject.GetComponent<EyeTrap>().Trip();
+                    death(); 
+
+                } 
+            }
+            else
+            {
+                death();
+            }
+
         }
-        if (other.tag == "Hide")
+        else if (other.tag == "Hide")
         {
             hidden = true;
         }
+        else if (other.tag == "checkpoint")
+        {
+            respawnPoint = other.transform;   
+        }
+        else if (other.tag == "pickup")
+        {
+            CurrentCollectables += 1;
+            Destroy(other.gameObject);
+        }
+
     }
 
 
@@ -103,8 +181,18 @@ public class PlayerMovement : MonoBehaviour
 
     //off on light
     public void LightSwitch() {
-        flashLight.SetActive(!flashLight.active);
-    
+        if (flashLight.activeSelf)
+        {
+            flashLight.SetActive(false);
+        }
+        else {
+            if (battery > 0)
+            {
+                flashLight.SetActive(true);
+            }
+
+
+        }
     }
 
     //hide 
@@ -114,23 +202,13 @@ public class PlayerMovement : MonoBehaviour
     public void Unhide() {
         SR.enabled = true ;
         hidden = false;
-
     }
 
-
-    public void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log(collision.gameObject.tag);
-        if (collision.gameObject.tag == "Hide") {
-            hidden = false;
-        } 
-    }
 
 
     #region  deaths
     private void death()
     {
-        
 
         transform.position = respawnPoint.transform.position;
         rb2d.velocity = Vector3.zero;
@@ -138,7 +216,6 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-   
     #endregion
 
     IEnumerator respawn()
