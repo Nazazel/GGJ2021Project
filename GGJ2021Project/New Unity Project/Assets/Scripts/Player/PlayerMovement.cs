@@ -98,8 +98,16 @@ public class PlayerMovement : MonoBehaviour
         }
 
         if (currentBattery <= 0 && flashLight.active) { LightSwitch(); }
+        if (currentBattery >= 0)
+        {
+            if (currentBattery - LightCost >= 0)
+                currentBattery -= LightCost;
+            else
+                currentBattery = 0;
+
+        }
         if (flashLight.active) {
-            currentBattery -= LightCost;
+            
             if (currentBattery > 10)
                 flashLight.GetComponent<Light2D>().intensity = (currentBattery / 100);
             else
@@ -123,7 +131,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Win() 
     {
-        Debug.Log("win");
+
     }
 
     public void ChargeBattery() {
@@ -140,11 +148,9 @@ public class PlayerMovement : MonoBehaviour
         if (other.tag == "hurtbox")
         {
             if (other.gameObject.GetComponent<EyeTrap>() != null) {
-                if (!other.gameObject.GetComponent<EyeTrap>().activated) {
+                
                     other.gameObject.GetComponent<EyeTrap>().Trip();
                     death(); 
-
-                } 
             }
             else
             {
