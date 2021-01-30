@@ -31,9 +31,9 @@ public class PlayerMovement : MonoBehaviour
     private float jumpDistance;
     private float duration;
     private SpriteRenderer SR;
-    public float battery ;
-    public float currentBattery;
-    private float batteryCharge=100f;
+    private float battery=100 ;
+    private float currentBattery;
+    public float batteryCharge;
     public float LightCost;
     private bool keyAlternate;
     public UIManager ui;
@@ -198,6 +198,7 @@ public class PlayerMovement : MonoBehaviour
     //hide 
     public void Hide() {
         SR.enabled = false;
+        if (flashLight.active) { LightSwitch(); }
     }
     public void Unhide() {
         SR.enabled = true ;
