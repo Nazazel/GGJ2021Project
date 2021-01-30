@@ -11,8 +11,15 @@ public class FlashLight : MonoBehaviour
 
         if (other.gameObject.GetComponent<EyeTrap>()) {
 
-            other.gameObject.GetComponent<EyeTrap>().Lit();
+            if(!other.gameObject.GetComponent<EyeTrap>().activated)
+                other.gameObject.GetComponent<EyeTrap>().Lit();
         }
-      
+
+        if (other.gameObject.GetComponent<Chase>())
+        {
+
+            other.gameObject.GetComponent<Chase>().Lit();
+        }
+
     }
 }

@@ -20,6 +20,7 @@ public class PlayerMovement : MonoBehaviour
     public GameObject flashLight;
     public Transform respawnPoint;
     public float respawnTime;
+
     public bool hidden;
     
 
