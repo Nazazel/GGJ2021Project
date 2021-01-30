@@ -14,8 +14,7 @@ public class PlayerMovement : MonoBehaviour
     float horizontalMove = 0f;
     bool jump = false;
     public CharacterController controller;
-  
-
+    public GameObject flashLight;
     public Transform respawnPoint;
     public float respawnTime;
    
@@ -52,7 +51,9 @@ public class PlayerMovement : MonoBehaviour
             jumpDistance = transform.position.y;
             preJumpVelocity = rb2d.velocity;
         }
-
+        if (Input.GetKeyDown(KeyCode.LeftShift)) {
+            LightSwitch();
+        }
    
         if (controller.IsGrounded())
         {
@@ -83,6 +84,12 @@ public class PlayerMovement : MonoBehaviour
      
     }
     #endregion
+
+    public void LightSwitch() {
+        flashLight.SetActive(!flashLight.active);
+    
+    }
+
 
     #region  deaths
     private void death()
