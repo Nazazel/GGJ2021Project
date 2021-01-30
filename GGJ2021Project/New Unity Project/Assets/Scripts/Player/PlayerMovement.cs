@@ -17,14 +17,15 @@ public class PlayerMovement : MonoBehaviour
     public GameObject flashLight;
     public Transform respawnPoint;
     public float respawnTime;
-   
+    public bool hidden;
+
 
     private Rigidbody2D rb2d;
     private bool respawning;
     private Vector2 preJumpVelocity;
     private float jumpDistance;
     private float duration;
-
+    private SpriteRenderer SR;
     void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -32,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
         respawning = false;
         jumpDistance = transform.position.y;
         StartCoroutine("respawn");
-
+        SR = GetComponent<SpriteRenderer>();
     }
 
     IEnumerator WaitForSoundReset()
@@ -59,6 +60,12 @@ public class PlayerMovement : MonoBehaviour
         {
             jumpDistance = transform.position.y;
         }
+        
+        if (hidden) 
+        {
+            if (Input.GetKeyDown(KeyCode.DownArrow)) { Hide(); }
+            else if(Input.GetKeyUp(KeyCode.DownArrow)) { SR.enabled = true; }
+        }
     }
 
     // FixedUpdate is called multiple times per x amount of frames
@@ -72,22 +79,51 @@ public class PlayerMovement : MonoBehaviour
     #region  triggers
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Death")
+        Debug.Log(other.tag);
+        if (other.tag == "hurtbox")
         {
             death();
+        }
+        if (other.tag == "Hide")
+        {
+            hidden = true;
         }
     }
 
 
+
     void OnTriggerExit2D(Collider2D other)
     {
-     
+        if (other.tag == "Hide")
+        {
+            Unhide();
+        }
     }
     #endregion
 
+    //off on light
     public void LightSwitch() {
         flashLight.SetActive(!flashLight.active);
     
+    }
+
+    //hide 
+    public void Hide() {
+        SR.enabled = false;
+    }
+    public void Unhide() {
+        SR.enabled = true ;
+        hidden = false;
+
+    }
+
+
+    public void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log(collision.gameObject.tag);
+        if (collision.gameObject.tag == "Hide") {
+            hidden = false;
+        } 
     }
 
 
