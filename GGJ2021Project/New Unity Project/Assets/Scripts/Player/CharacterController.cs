@@ -28,7 +28,7 @@ public class CharacterController : MonoBehaviour
     private Vector3 m_Velocity = Vector3.zero;
     private GameObject light;
     [HideInInspector] public Rigidbody2D m_RigidBody2D;
-    [HideInInspector] public BoxCollider2D m_BoxCollider2D;
+    [HideInInspector] public CapsuleCollider2D m_CapsuleCollider2D;
 
     public Transform GroundCheck { get => m_GroundCheck; set => m_GroundCheck = value; }
     public float jumpsRemaining { get => m_AirJumpsLeft; }
@@ -41,14 +41,14 @@ public class CharacterController : MonoBehaviour
     void Awake()
     {
         m_RigidBody2D = GetComponent<Rigidbody2D>();
-        m_BoxCollider2D = GetComponent<BoxCollider2D>();
+        m_CapsuleCollider2D = GetComponent<CapsuleCollider2D>();
         //animator = GetComponent<Animator>(); //get animator component
     }
 
     void FixedUpdate()
     {
         // AH WHAT IS THE SIZE
-        m_Grounded = Physics2D.BoxCast(transform.position, new Vector2(m_BoxCollider2D.bounds.size.x * 0.9f, m_BoxCollider2D.bounds.size.y * 0.9f), 0, Vector2.down, transform.position.y - m_GroundCheck.position.y, m_GroundLayer);
+        m_Grounded = Physics2D.CapsuleCast(transform.position, new Vector2(m_CapsuleCollider2D.bounds.size.x * 0.9f, m_CapsuleCollider2D.bounds.size.y * 0.9f), CapsuleDirection2D.Vertical, 0, Vector2.down, transform.position.y - m_GroundCheck.position.y, m_GroundLayer);
         if (m_Grounded)
             m_AirJumpsLeft = m_AirJumps;
 
@@ -135,7 +135,7 @@ public class CharacterController : MonoBehaviour
         {
             bool hitWall;
             int dir = m_FacingRight ? 1 : -1 ;
-            hitWall = Physics2D.BoxCast(transform.position, new Vector2(m_BoxCollider2D.bounds.size.x, m_BoxCollider2D.bounds.size.y), 0, Vector2.right * dir, m_BoxCollider2D.bounds.size.x, m_GroundLayer) ;
+            hitWall = Physics2D.CapsuleCast(transform.position, new Vector2(m_CapsuleCollider2D.bounds.size.x, m_CapsuleCollider2D.bounds.size.y), CapsuleDirection2D.Vertical, 0, Vector2.right * dir, m_CapsuleCollider2D.bounds.size.x, m_GroundLayer) ;
             if (hitWall)
                 m_AirControl = false;
             else m_AirControl = true;
