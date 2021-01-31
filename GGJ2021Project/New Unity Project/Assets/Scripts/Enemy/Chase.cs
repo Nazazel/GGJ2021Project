@@ -34,6 +34,7 @@ public class Chase : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
+        if (player == null) { player = GameObject.FindGameObjectWithTag("Player"); }
         c2d = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
         state = State.patrol;
@@ -58,7 +59,7 @@ public class Chase : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log((Vector2.Distance(transform.position, target.transform.position)));
+
         Move(agent.velocity.x);
 
         //set states
