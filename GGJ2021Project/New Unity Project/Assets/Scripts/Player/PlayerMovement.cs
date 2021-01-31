@@ -276,6 +276,17 @@ public class PlayerMovement : MonoBehaviour
         if (flashLight.activeSelf) { LightSwitch(); }
         transform.position = respawnPoint.transform.position;
         rb2d.velocity = Vector3.zero;
+        if (maggot != null)
+        {
+            maggot.Calm();
+        }
+        else if (GameManager.maggot != null)
+        {
+            maggot = GameManager.maggot.GetComponent<Chase>();
+            maggot.Calm();
+
+
+        }
         StartCoroutine("respawn");
 
     }
