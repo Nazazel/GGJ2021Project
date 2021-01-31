@@ -33,11 +33,7 @@ public class Door : MonoBehaviour
 
     }
 
-    void Shake()
-    {
-
-
-    }
+   
 
     private void Update()
     {

@@ -36,8 +36,11 @@ public class PlayerMovement : MonoBehaviour
     private float currentBattery;
     public float batteryCharge;
     public float LightCost;
+    public float LightMultiplier=2;
     private bool keyAlternate;
     public UIManager ui;
+    public Chase maggot;
+
 
     public int collectableAmount=3;
     private int CurrentCollectables;
@@ -52,6 +55,8 @@ public class PlayerMovement : MonoBehaviour
         keyAlternate = false;
         currentBattery = battery;
         flashLight.SetActive(false);
+        maggot = FindObjectOfType<Chase>();
+
 
     }
 
@@ -103,8 +108,10 @@ public class PlayerMovement : MonoBehaviour
             if (currentBattery <= 0 && flashLight.active) { LightSwitch(); }
             if (currentBattery >= 0)
             {
-                if (currentBattery - LightCost >= 0)
+                if (currentBattery - LightCost >= 0 &&!flashLight.active)
                     currentBattery -= LightCost;
+                else if (currentBattery - (LightCost*LightMultiplier) >= 0 && flashLight.active)
+                    currentBattery -= (LightCost * LightMultiplier);
                 else
                     currentBattery = 0;
 
@@ -143,6 +150,7 @@ public class PlayerMovement : MonoBehaviour
         else {
             currentBattery += batteryCharge;
         }
+        Trigger();
     
     }
 
@@ -150,8 +158,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.transform.tag == "hurtbox")
+        if (!other.gameObject.GetComponent<Chase>().stunned && !other.gameObject.GetComponent<Chase>().trapped)
         {
+ 
+
             death();
         }
     }
@@ -163,12 +173,11 @@ public class PlayerMovement : MonoBehaviour
             if (other.gameObject.GetComponent<EyeTrap>() != null) {
                 if (!other.gameObject.GetComponent<EyeTrap>().activated) { }
                     other.gameObject.GetComponent<EyeTrap>().Trip();
-                    death(); 
+                    death();
+
             }
-            else
-            {
-                death();
-            }
+
+ 
 
         }
         else if (other.tag == "Hide")
@@ -182,12 +191,20 @@ public class PlayerMovement : MonoBehaviour
         else if (other.tag == "pickup")
         {
             CurrentCollectables += 1;
+            other.GetComponent<Collectable>().Collect();
             Destroy(other.gameObject);
         }
 
     }
 
+    public void Trigger()
+    {
+        if (maggot != null)
+        {
+            maggot.Alert();
+        }
 
+    }
 
     void OnTriggerExit2D(Collider2D other)
     {
@@ -229,7 +246,7 @@ public class PlayerMovement : MonoBehaviour
     #region  deaths
     private void death()
     {
-
+        if (flashLight.activeSelf) { LightSwitch(); }
         transform.position = respawnPoint.transform.position;
         rb2d.velocity = Vector3.zero;
         StartCoroutine("respawn");

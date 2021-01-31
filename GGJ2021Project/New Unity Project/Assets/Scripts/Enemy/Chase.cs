@@ -14,6 +14,7 @@ public class Chase : MonoBehaviour
     public GameObject[] SpawnPoints;
     public bool stunned;
     public bool trapped;
+    public bool m_FacingRight = true;
 
     public float stunTime;
     public float TrapTime;
@@ -25,11 +26,13 @@ public class Chase : MonoBehaviour
     public float SuspiciousDistance;
     public float AlertedSpeed;
     public float AlertedDistance;
+    private Rigidbody2D rb;
     private Coroutine co;
 
     // Start is called before the first frame update
     private void Awake()
     {
+        rb = GetComponent<Rigidbody2D>();
         state = State.patrol;
         play = player.GetComponent<PlayerMovement>();
         stunned = false;
@@ -44,9 +47,14 @@ public class Chase : MonoBehaviour
         SetWayPoint();
     }
 
-    // Update is called once per frame
+
+ 
+
+// Update is called once per frame
     void Update()
     {
+        Move(agent.velocity.x);
+
         //set states
         if (!trapped && !stunned)
         {
@@ -83,12 +91,15 @@ public class Chase : MonoBehaviour
 
                if ((Vector2.Distance(transform.position, player.transform.position)) < 1f && !stop)
             {
-                Debug.Log("kill");
+
                 SetWayPoint();
 
 
             }
         }
+        
+        
+        
 
 
         switch (state) {
@@ -115,24 +126,39 @@ public class Chase : MonoBehaviour
         }
     }
 
-    IEnumerator Stun()
+    private void Move(float move) {
+        if (move > 0 && !m_FacingRight)
+            Flip();
+
+        else if (move < 0 && m_FacingRight)
+            Flip();
+    }
+
+    
+
+IEnumerator Stun()
     {
+        rb.velocity = Vector2.zero;
         agent.Stop();
+        rb.isKinematic = true;
         stunned = true;
         yield return new WaitForSeconds(stunTime);
         stunned = false;
+        rb.isKinematic = false;
         agent.Resume();
-
         SetWayPoint();
 
     }
 
     IEnumerator TrapStun()
     {
+        rb.velocity = Vector2.zero;
+        rb.isKinematic = true;
         agent.Stop();
         trapped = true;
         yield return new WaitForSeconds(TrapTime);
         trapped = false;
+        rb.isKinematic = false;
         agent.Resume();
         SetWayPoint();
     }
@@ -169,6 +195,19 @@ public class Chase : MonoBehaviour
             StopCoroutine(co);
             co = StartCoroutine(TrapStun());
         }
+    }
+
+    void Flip()
+    {
+        m_FacingRight = !m_FacingRight;
+        Vector2 localScale = gameObject.transform.localScale;
+        localScale.x *= -1;
+        transform.localScale = localScale;
+    }
+
+    public void Alert() {
+        state = State.alerted;
+        target = player;
     }
 
     public  void Respawn(Vector3 position, GameObject[] waypoints)  
