@@ -99,7 +99,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   totalBattery: 100
   currentBattery: 0
-  IncrementAmount: 0.2
+  IncrementAmount: 0.4
   open: 0
   active: 0
   anim: {fileID: 0}
