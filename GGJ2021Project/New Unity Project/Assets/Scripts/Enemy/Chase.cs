@@ -233,7 +233,7 @@ IEnumerator Stun()
     }
 
     public void Alert() {
-        state = State.alerted;
+        state = State.suspicious;
         target = player;
     }
 
