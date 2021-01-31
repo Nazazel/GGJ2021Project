@@ -48,7 +48,7 @@ public class CharacterController : MonoBehaviour
     void FixedUpdate()
     {
         // AH WHAT IS THE SIZE
-        m_Grounded = Physics2D.CapsuleCast(transform.position, new Vector2(m_CapsuleCollider2D.bounds.size.x * 0.9f, m_CapsuleCollider2D.bounds.size.y * 0.9f), CapsuleDirection2D.Vertical, 0, Vector2.down, transform.position.y - m_GroundCheck.position.y, m_GroundLayer);
+        m_Grounded = Physics2D.CapsuleCast(transform.position, new Vector2(m_CapsuleCollider2D.bounds.size.x * 0.9f, m_CapsuleCollider2D.bounds.size.y * 0.5f), CapsuleDirection2D.Vertical, 0, Vector2.down, transform.position.y - m_GroundCheck.position.y, m_GroundLayer);
         if (m_Grounded)
             m_AirJumpsLeft = m_AirJumps;
 
