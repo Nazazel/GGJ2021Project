@@ -6,11 +6,12 @@ public class EyeTrap : Lightable
 {
     public bool activated;
     public float cooldown;
-    public bool enemy = true;
+    public bool enemy = false;
     public Chase maggot;
-    private void Start()
+    private void Awake()
     {
         activated = false;
+        maggot = FindObjectOfType<Chase>();
     }
 
 

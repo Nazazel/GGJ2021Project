@@ -20,6 +20,23 @@ public class FlashLight : MonoBehaviour
 
             other.gameObject.GetComponent<Chase>().Lit();
         }
+        if (other.gameObject.GetComponent<Door>())
+        {
+
+            other.gameObject.GetComponent<Door>().Lit();
+        }
+
+    }
+   
+    void OnTriggerExit2D(Collider2D other)
+    {
+
+      
+        if (other.gameObject.GetComponent<Door>())
+        {
+
+            other.gameObject.GetComponent<Door>().Redo();
+        }
 
     }
 }

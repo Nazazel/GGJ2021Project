@@ -39,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
     private bool keyAlternate;
     public UIManager ui;
 
-    public int collectableAmount;
+    public int collectableAmount=3;
     private int CurrentCollectables;
     void Awake()
     {
