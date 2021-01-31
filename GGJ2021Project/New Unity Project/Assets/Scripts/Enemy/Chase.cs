@@ -32,6 +32,8 @@ public class Chase : MonoBehaviour
     {
         state = State.patrol;
         play = player.GetComponent<PlayerMovement>();
+        stunned = false;
+        trapped = false;
     }
     void Start()
     {
@@ -39,6 +41,7 @@ public class Chase : MonoBehaviour
         agent.speed = PatrolSpeed;
         agent.updateRotation = false;
         agent.updateUpAxis = false;
+        SetWayPoint();
     }
 
     // Update is called once per frame
@@ -47,21 +50,9 @@ public class Chase : MonoBehaviour
         //set states
         if (!trapped && !stunned)
         {
-            if ((Vector2.Distance(transform.position, player.transform.position)) < .1f && !stop)
+          
+             if (state == State.alerted)
             {
-                SetWayPoint();
-
-
-            }
-            else if (state == State.alerted)
-            {
-
-
-            }
-
-            else if ((Vector2.Distance(transform.position, player.transform.position)) < SuspiciousDistance && !stop && !play.hidden)
-            {
-                state = State.suspicious;
 
 
             }
@@ -71,9 +62,30 @@ public class Chase : MonoBehaviour
 
 
             }
+            else if ((Vector2.Distance(transform.position, player.transform.position)) < SuspiciousDistance && !stop && !play.hidden)
+            {
+                state = State.suspicious;
+
+
+            }
+            else if ((Vector2.Distance(transform.position, target.transform.position)) < 1f && !stop)
+            {
+                Debug.Log("switch");
+                SetWayPoint();
+
+
+            }
             else
             {
                 state = State.patrol;
+
+            }
+
+               if ((Vector2.Distance(transform.position, player.transform.position)) < 1f && !stop)
+            {
+                Debug.Log("kill");
+                SetWayPoint();
+
 
             }
         }
@@ -96,8 +108,11 @@ public class Chase : MonoBehaviour
 
 
         }
-
-        agent.SetDestination(target.transform.position);
+        if (GameManager.won) { agent.Stop(); }
+        else
+        {
+            agent.SetDestination(target.transform.position);
+        }
     }
 
     IEnumerator Stun()
@@ -106,6 +121,8 @@ public class Chase : MonoBehaviour
         stunned = true;
         yield return new WaitForSeconds(stunTime);
         stunned = false;
+        agent.Resume();
+
         SetWayPoint();
 
     }
@@ -116,11 +133,19 @@ public class Chase : MonoBehaviour
         trapped = true;
         yield return new WaitForSeconds(TrapTime);
         trapped = false;
+        agent.Resume();
         SetWayPoint();
     }
 
     public void SetWayPoint() {
-            
+        while (true)
+        {
+            GameObject x = wayPoints[Random.Range(0, wayPoints.Length)];
+            if (x != target) { target = x; break; }
+        }
+        state = State.patrol;
+        agent.SetDestination(target.transform.position);
+
     }
 
     public void Lit() {

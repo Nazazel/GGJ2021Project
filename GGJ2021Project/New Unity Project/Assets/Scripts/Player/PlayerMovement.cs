@@ -22,10 +22,10 @@ public class PlayerMovement : MonoBehaviour
     public float respawnTime;
 
     public bool hidden;
+
+
+
     
-
-
-
     private Rigidbody2D rb2d;
     private bool respawning;
     private Vector2 preJumpVelocity;
@@ -59,65 +59,68 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (CurrentCollectables == collectableAmount) { Win(); }
-
-        flashLight.transform.position = transform.position;
-        horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
-        if (Input.GetButtonDown("Jump"))
+        if (!respawning)
         {
-            jump = true;
-            jumpDistance = transform.position.y;
-            preJumpVelocity = rb2d.velocity;
-        }
-        if (Input.GetKeyDown(KeyCode.LeftShift)) {
-            LightSwitch();
-        }
-   
-        if (controller.IsGrounded())
-        {
-            jumpDistance = transform.position.y;
-        }
-        
-        if (hidden) 
-        {
-            if (Input.GetKeyDown(KeyCode.DownArrow)) { Hide(); }
-            else if(Input.GetKeyUp(KeyCode.DownArrow)) { SR.enabled = true; }
-        }
+            if (CurrentCollectables == collectableAmount) { Win(); }
 
-        if (Input.GetKeyDown(KeyCode.Q) && keyAlternate == false && !flashLight.active)
-        {
-            keyAlternate = true;
-            ChargeBattery();
+            flashLight.transform.position = transform.position;
+            horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
+            if (Input.GetButtonDown("Jump"))
+            {
+                jump = true;
+                jumpDistance = transform.position.y;
+                preJumpVelocity = rb2d.velocity;
+            }
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                LightSwitch();
+            }
 
+            if (controller.IsGrounded())
+            {
+                jumpDistance = transform.position.y;
+            }
+
+            if (hidden)
+            {
+                if (Input.GetKeyDown(KeyCode.DownArrow)) { Hide(); }
+                else if (Input.GetKeyUp(KeyCode.DownArrow)) { SR.enabled = true; }
+            }
+
+            if (Input.GetKeyDown(KeyCode.Q) && keyAlternate == false && !flashLight.active)
+            {
+                keyAlternate = true;
+                ChargeBattery();
+
+            }
+            else if (Input.GetKeyDown(KeyCode.E) && keyAlternate == true && !flashLight.active)
+            {
+                keyAlternate = false;
+                ChargeBattery();
+
+            }
+
+            if (currentBattery <= 0 && flashLight.active) { LightSwitch(); }
+            if (currentBattery >= 0)
+            {
+                if (currentBattery - LightCost >= 0)
+                    currentBattery -= LightCost;
+                else
+                    currentBattery = 0;
+
+            }
+            if (flashLight.active)
+            {
+
+                if (currentBattery > 10)
+                    flashLight.GetComponent<Light2D>().intensity = (currentBattery / 100);
+                else
+                    flashLight.GetComponent<Light2D>().intensity = .1f;
+
+            }
+
+            ui.setAmount(currentBattery);
         }
-        else if (Input.GetKeyDown(KeyCode.E) && keyAlternate == true && !flashLight.active)
-        {
-            keyAlternate = false;
-            ChargeBattery();
-
-        }
-
-        if (currentBattery <= 0 && flashLight.active) { LightSwitch(); }
-        if (currentBattery >= 0)
-        {
-            if (currentBattery - LightCost >= 0)
-                currentBattery -= LightCost;
-            else
-                currentBattery = 0;
-
-        }
-        if (flashLight.active) {
-            
-            if (currentBattery > 10)
-                flashLight.GetComponent<Light2D>().intensity = (currentBattery / 100);
-            else
-                flashLight.GetComponent<Light2D>().intensity = .1f;
-
-        }
-
-        ui.setAmount(currentBattery);
-
     }
 
     // FixedUpdate is called multiple times per x amount of frames
@@ -132,7 +135,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Win() 
     {
-
+        GameManager.won = true;
     }
 
     public void ChargeBattery() {
@@ -144,12 +147,21 @@ public class PlayerMovement : MonoBehaviour
     }
 
     #region  triggers
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.transform.tag == "hurtbox")
+        {
+            death();
+        }
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "hurtbox")
         {
             if (other.gameObject.GetComponent<EyeTrap>() != null) {
-                
+                if (!other.gameObject.GetComponent<EyeTrap>().activated) { }
                     other.gameObject.GetComponent<EyeTrap>().Trip();
                     death(); 
             }
@@ -229,7 +241,13 @@ public class PlayerMovement : MonoBehaviour
     IEnumerator respawn()
     {
         respawning = true;
+        SR.enabled = false;
         yield return new WaitForSeconds(respawnTime);
         respawning = false;
+        currentBattery = battery;
+        SR.enabled = true;
+        rb2d.velocity = Vector3.zero;
+
+
     }
 }
