@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Experimental.Rendering.Universal; //2019 VERSIONS
 using UnityEngine.UI;
+using System.Threading;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -23,7 +24,9 @@ public class PlayerMovement : MonoBehaviour
 
     public bool hidden;
     public bool isHidden;
-    
+    public bool charging=false;
+    public float waitCharge;
+    private float time = 0; 
     private Rigidbody2D rb2d;
     private bool respawning;
     private Vector2 preJumpVelocity;
@@ -39,6 +42,7 @@ public class PlayerMovement : MonoBehaviour
     private bool keyAlternate;
     public UIManager ui;
     public Chase maggot;
+
 
 
     public int collectableAmount=3;
@@ -70,6 +74,11 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (charging) {
+
+            time += .01f;
+            if (time >= waitCharge) { charging = false; }
+                }
         if (!respawning)
         {
             if (CurrentCollectables == collectableAmount) { Win(); }
@@ -97,18 +106,20 @@ public class PlayerMovement : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.DownArrow )|| Input.GetKeyDown(KeyCode.S)) { Hide(); }
                 else if (Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.S)) { Unhide(); }
             }
-
-            if (Input.GetKeyDown(KeyCode.Q) && keyAlternate == false && !flashLight.active)
+            if (Input.GetAxisRaw("Horizontal") == 0 && controller.IsGrounded())
             {
-                keyAlternate = true;
-                ChargeBattery();
+                if (Input.GetKeyDown(KeyCode.Q) && keyAlternate == false && !flashLight.active)
+                {
+                    keyAlternate = true;
+                    ChargeBattery();
 
-            }
-            else if (Input.GetKeyDown(KeyCode.E) && keyAlternate == true && !flashLight.active)
-            {
-                keyAlternate = false;
-                ChargeBattery();
+                }
+                else if (Input.GetKeyDown(KeyCode.E) && keyAlternate == true && !flashLight.active)
+                {
+                    keyAlternate = false;
+                    ChargeBattery();
 
+                }
             }
 
             if (currentBattery <= 0 && flashLight.active) { LightSwitch(); }
@@ -152,6 +163,9 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public void ChargeBattery() {
+        time = 0;
+        charging = true;
+
         if (currentBattery + batteryCharge > battery) { currentBattery = battery; }
         else {
             currentBattery += batteryCharge;
@@ -210,6 +224,7 @@ public class PlayerMovement : MonoBehaviour
         {
             other.GetComponent<teleportActivator>().MessageAI();
         }
+        
 
 
     }
@@ -276,6 +291,17 @@ public class PlayerMovement : MonoBehaviour
         if (flashLight.activeSelf) { LightSwitch(); }
         transform.position = respawnPoint.transform.position;
         rb2d.velocity = Vector3.zero;
+        if (maggot != null)
+        {
+            maggot.Calm();
+        }
+        else if (GameManager.maggot != null)
+        {
+            maggot = GameManager.maggot.GetComponent<Chase>();
+            maggot.Calm();
+
+
+        }
         StartCoroutine("respawn");
 
     }

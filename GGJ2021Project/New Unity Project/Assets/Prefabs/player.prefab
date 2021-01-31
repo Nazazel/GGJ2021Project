@@ -91,6 +91,8 @@ GameObject:
   - component: {fileID: 2413057537492570193}
   - component: {fileID: 2413057537492571054}
   - component: {fileID: 1475576400}
+  - component: {fileID: 2408788281889421819}
+  - component: {fileID: 3207622998694217934}
   m_Layer: 0
   m_Name: player
   m_TagString: Player
@@ -153,7 +155,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 55a13ac75928c0847ab21570976a7ffd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5d1295f1be8afc145a8a7a37b2f8e081, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -197,13 +199,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb468dca8eb9fd149b06b1386289f860, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runSpeed: 20
+  runSpeed: 15
   controller: {fileID: 2413057537492571054}
   flashLight: {fileID: 0}
   respawnPoint: {fileID: 0}
   respawnTime: 2
   hidden: 0
   isHidden: 0
+  charging: 0
+  waitCharge: 0.3
   batteryCharge: 1
   LightCost: 0.1
   LightMultiplier: 2
@@ -248,9 +252,44 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.036605418, y: -0.10725379}
-  m_Size: {x: 0.6066977, y: 1.0654924}
+  m_Offset: {x: -0.036605418, y: -0.09881812}
+  m_Size: {x: 0.6066977, y: 1.7122303}
   m_Direction: 0
+--- !u!95 &2408788281889421819
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2413057537492570196}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: eaa4037dc3a67ef46ab10e95a95cae8d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &3207622998694217934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2413057537492570196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf35863bb9558e447add9a9f33156ea5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 0}
+  player: {fileID: 0}
+  anim: {fileID: 0}
+  fall: 0
 --- !u!1 &2413057538553889666
 GameObject:
   m_ObjectHideFlags: 0

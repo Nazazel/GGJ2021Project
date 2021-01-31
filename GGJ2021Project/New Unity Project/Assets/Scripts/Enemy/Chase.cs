@@ -15,7 +15,7 @@ public class Chase : MonoBehaviour
     public bool stunned;
     public bool trapped;
     public bool m_FacingRight = true;
-
+    private Animator animator;
     public float stunTime;
     public float TrapTime;
     private bool stop;
@@ -34,6 +34,7 @@ public class Chase : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
+        animator = GetComponent<Animator>();
         if (player == null) { player = GameObject.FindGameObjectWithTag("Player"); }
         c2d = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
@@ -83,6 +84,7 @@ public class Chase : MonoBehaviour
 
             else if ((Vector2.Distance(transform.position, target.transform.position)) < 1f && !stop && (target != player) && state != State.alerted)
             {
+                state = State.patrol;
 
                 SetWayPoint();
 
@@ -90,8 +92,11 @@ public class Chase : MonoBehaviour
             }
             else if ((Vector2.Distance(transform.position, player.transform.position)) < 1f && !stop && (target == player) && state != State.alerted)
             {
+                animator.SetBool("attacking", true);
+                state = State.patrol;
 
                 SetWayPoint();
+
 
 
             }
@@ -101,6 +106,7 @@ public class Chase : MonoBehaviour
         switch (state) {
 
             case State.alerted:
+                animator.SetBool("alerted",true);
                 agent.speed = AlertedSpeed;
                 target = player;
                 gameObject.layer = 0;
@@ -108,6 +114,7 @@ public class Chase : MonoBehaviour
              //   if (Vector2.Distance(transform.position, target.transform.position) > LoseInterestRange) { state = State.patrol; }
                 break;
             case State.suspicious:
+                animator.SetBool("alerted", false);
                 agent.speed = suspiciousSpeed;
                 target = player;
                 gameObject.layer = 12;
@@ -115,6 +122,7 @@ public class Chase : MonoBehaviour
                 break;
 
             case State.patrol:
+                animator.SetBool("alerted", false);
                 agent.speed = PatrolSpeed;
                 if (target == player) { SetWayPoint(); }
                 gameObject.layer = 12;
@@ -145,11 +153,14 @@ IEnumerator Stun()
         rb.velocity = Vector2.zero;
         agent.Stop();
         rb.isKinematic = true;
+        c2d.isTrigger = true;
         stunned = true;
         yield return new WaitForSeconds(stunTime);
         stunned = false;
+        c2d.isTrigger = false;
         rb.isKinematic = false;
         agent.Resume();
+        animator.SetBool("stunned", false);
         SetWayPoint();
 
     }
@@ -164,6 +175,7 @@ IEnumerator Stun()
         trapped = false;
         rb.isKinematic = false;
         agent.Resume();
+        animator.SetBool("stunned", false);
         SetWayPoint();
     }
 
@@ -184,9 +196,13 @@ IEnumerator Stun()
     public void Lit() {
         if (co == null)
         {
+            animator.SetBool("stunned", true);
+
             co = StartCoroutine(Stun());
         }
         else if (!trapped) {
+            animator.SetBool("stunned", true);
+
             StopCoroutine(co);
             co = StartCoroutine(Stun());
 
@@ -194,11 +210,15 @@ IEnumerator Stun()
     }
 
     public void Trapped() {
+
         if (co == null)
         {
+            animator.SetBool("stunned", true);
+
             co = StartCoroutine(TrapStun());
         }
         else if(!trapped){
+            animator.SetBool("stunned", true);
             StopCoroutine(co);
             co = StartCoroutine(TrapStun());
         }
@@ -213,10 +233,17 @@ IEnumerator Stun()
     }
 
     public void Alert() {
-        state = State.alerted;
+        state = State.suspicious;
         target = player;
     }
 
+    public void Calm() {
+        animator.SetBool("attacking", true);
+        state = State.patrol;
+
+        SetWayPoint();
+
+    }
     public  void Respawn(Vector3 position, GameObject[] waypoints)  
     {
        
