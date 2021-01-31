@@ -22,15 +22,14 @@ public class PlayerMovement : MonoBehaviour
     public float respawnTime;
 
     public bool hidden;
-
-
-
+    public bool isHidden;
     
     private Rigidbody2D rb2d;
     private bool respawning;
     private Vector2 preJumpVelocity;
     private float jumpDistance;
     private float duration;
+    private Collider2D col;
     private SpriteRenderer SR;
     private float battery=100 ;
     private float currentBattery;
@@ -48,6 +47,7 @@ public class PlayerMovement : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         rb2d = GetComponent<Rigidbody2D>();
+        col = GetComponent<Collider2D>();
         respawning = false;
         jumpDistance = transform.position.y;
         SR = GetComponent<SpriteRenderer>();
@@ -88,8 +88,8 @@ public class PlayerMovement : MonoBehaviour
 
             if (hidden)
             {
-                if (Input.GetKeyDown(KeyCode.DownArrow)) { Hide(); }
-                else if (Input.GetKeyUp(KeyCode.DownArrow)) { SR.enabled = true; }
+                if (Input.GetKeyDown(KeyCode.DownArrow )|| Input.GetKeyDown(KeyCode.S)) { Hide(); }
+                else if (Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.S)) { Unhide(); }
             }
 
             if (Input.GetKeyDown(KeyCode.Q) && keyAlternate == false && !flashLight.active)
@@ -158,17 +158,20 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (!other.gameObject.GetComponent<Chase>().stunned && !other.gameObject.GetComponent<Chase>().trapped)
+        if (other.gameObject.tag == "hurtbox")
         {
- 
+            if (!other.gameObject.GetComponent<Chase>().stunned && !other.gameObject.GetComponent<Chase>().trapped && !isHidden)
+            {
 
-            death();
+
+                death();
+            }
         }
     }
-
+   
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "hurtbox")
+        if (other.tag == "hurtbox" )
         {
             if (other.gameObject.GetComponent<EyeTrap>() != null) {
                 if (!other.gameObject.GetComponent<EyeTrap>().activated) { }
@@ -210,6 +213,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.tag == "Hide")
         {
+            hidden = false;
             Unhide();
         }
     }
@@ -234,11 +238,14 @@ public class PlayerMovement : MonoBehaviour
     //hide 
     public void Hide() {
         SR.enabled = false;
+        gameObject.layer = 11;
         if (flashLight.active) { LightSwitch(); }
+        isHidden = true;
     }
     public void Unhide() {
+        gameObject.layer = 0;
+        isHidden = false;
         SR.enabled = true ;
-        hidden = false;
     }
 
 

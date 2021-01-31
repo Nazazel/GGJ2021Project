@@ -48,9 +48,9 @@ public class Chase : MonoBehaviour
     }
 
 
- 
 
-// Update is called once per frame
+
+    // Update is called once per frame
     void Update()
     {
         Move(agent.velocity.x);
@@ -58,38 +58,30 @@ public class Chase : MonoBehaviour
         //set states
         if (!trapped && !stunned)
         {
-          
-             if (state == State.alerted)
-            {
 
 
-            }
-            else if ((Vector2.Distance(transform.position, player.transform.position)) < AlertedDistance && !stop && !play.hidden)
+            if (state == State.alerted && (Vector2.Distance(transform.position, player.transform.position)) < 1f) { state = State.patrol; }
+            else if ((Vector2.Distance(transform.position, player.transform.position)) < AlertedDistance && !stop && !play.isHidden)
             {
                 state = State.alerted;
 
 
             }
-            else if ((Vector2.Distance(transform.position, player.transform.position)) < SuspiciousDistance && !stop && !play.hidden)
+            else if ((Vector2.Distance(transform.position, player.transform.position)) < SuspiciousDistance && !stop && !play.isHidden)
             {
                 state = State.suspicious;
 
 
             }
-            else if ((Vector2.Distance(transform.position, target.transform.position)) < 1f && !stop)
+
+            else if ((Vector2.Distance(transform.position, target.transform.position)) < 1f && !stop && (target != player))
             {
-                Debug.Log("switch");
+
                 SetWayPoint();
 
 
             }
-            else
-            {
-                state = State.patrol;
-
-            }
-
-               if ((Vector2.Distance(transform.position, player.transform.position)) < 1f && !stop)
+            else if ((Vector2.Distance(transform.position, player.transform.position)) < 1f && !stop && (target == player))
             {
 
                 SetWayPoint();
@@ -97,9 +89,6 @@ public class Chase : MonoBehaviour
 
             }
         }
-        
-        
-        
 
 
         switch (state) {
@@ -107,14 +96,21 @@ public class Chase : MonoBehaviour
             case State.alerted:
                 agent.speed = AlertedSpeed;
                 target = player;
+                gameObject.layer = 0;
+                play.isHidden = false;
                 break;
             case State.suspicious:
                 agent.speed = suspiciousSpeed;
                 target = player;
+                gameObject.layer = 12;
+
                 break;
+
             case State.patrol:
                 agent.speed = PatrolSpeed;
                 if (target == player) { SetWayPoint(); }
+                gameObject.layer = 12;
+
                 break;
 
 
