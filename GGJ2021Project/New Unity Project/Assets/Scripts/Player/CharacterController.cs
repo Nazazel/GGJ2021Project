@@ -28,6 +28,7 @@ public class CharacterController : MonoBehaviour
     private Vector3 m_Velocity = Vector3.zero;
     private GameObject light;
     [HideInInspector] public Rigidbody2D m_RigidBody2D;
+    [HideInInspector] public BoxCollider2D m_BoxCollider2D;
 
     public Transform GroundCheck { get => m_GroundCheck; set => m_GroundCheck = value; }
     public float jumpsRemaining { get => m_AirJumpsLeft; }
@@ -40,15 +41,17 @@ public class CharacterController : MonoBehaviour
     void Awake()
     {
         m_RigidBody2D = GetComponent<Rigidbody2D>();
+        m_BoxCollider2D = GetComponent<BoxCollider2D>();
         //animator = GetComponent<Animator>(); //get animator component
     }
 
     void FixedUpdate()
     {
         // AH WHAT IS THE SIZE
-        m_Grounded = Physics2D.BoxCast(transform.position, new Vector2(.5f, .5f), 0, Vector2.down, transform.position.y - m_GroundCheck.position.y, m_GroundLayer);
+        m_Grounded = Physics2D.BoxCast(transform.position, new Vector2(m_BoxCollider2D.bounds.size.x * 0.9f, m_BoxCollider2D.bounds.size.y * 0.9f), 0, Vector2.down, transform.position.y - m_GroundCheck.position.y, m_GroundLayer);
         if (m_Grounded)
             m_AirJumpsLeft = m_AirJumps;
+
     }
 
     private void Update()
@@ -123,7 +126,23 @@ public class CharacterController : MonoBehaviour
         {
             m_RigidBody2D.velocity = new Vector2(m_RigidBody2D.velocity.x, m_JumpForceOnEnemies);
         }
+    }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        
+        if (collision.gameObject.layer == 8)
+        {
+            bool hitWall;
+            int dir = m_FacingRight ? 1 : -1 ;
+            hitWall = Physics2D.BoxCast(transform.position, new Vector2(m_BoxCollider2D.bounds.size.x, m_BoxCollider2D.bounds.size.y), 0, Vector2.right * dir, m_BoxCollider2D.bounds.size.x, m_GroundLayer) ;
+            if (hitWall)
+                m_AirControl = false;
+            else m_AirControl = true;
+
+            print("Hit Wall: " + hitWall);
+            print("Grounded: " + m_Grounded);
+        }
     }
 
     //Used by other scripts to check Character status

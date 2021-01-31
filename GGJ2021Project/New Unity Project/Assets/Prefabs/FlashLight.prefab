@@ -1,6 +1,10 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+<<<<<<< HEAD
 --- !u!1 &4557795441644893577
+=======
+--- !u!1 &6957655680530859859
+>>>>>>> main
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,10 +12,17 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
+<<<<<<< HEAD
   - component: {fileID: 4557795441644893582}
   - component: {fileID: 4557795441644893580}
   - component: {fileID: 4557795441644893583}
   - component: {fileID: 4557795441644893581}
+=======
+  - component: {fileID: 6957655680530859860}
+  - component: {fileID: 6957655680530859862}
+  - component: {fileID: 6957655680530859861}
+  - component: {fileID: 6957655680530859863}
+>>>>>>> main
   m_Layer: 10
   m_Name: FlashLight
   m_TagString: Untagged
@@ -19,13 +30,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+<<<<<<< HEAD
 --- !u!4 &4557795441644893582
+=======
+--- !u!4 &6957655680530859860
+>>>>>>> main
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
   m_GameObject: {fileID: 4557795441644893577}
+=======
+  m_GameObject: {fileID: 6957655680530859859}
+>>>>>>> main
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1.24, y: 1.3993406, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -33,13 +52,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD
 --- !u!114 &4557795441644893580
+=======
+--- !u!114 &6957655680530859862
+>>>>>>> main
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
   m_GameObject: {fileID: 4557795441644893577}
+=======
+  m_GameObject: {fileID: 6957655680530859859}
+>>>>>>> main
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
@@ -73,13 +100,21 @@ MonoBehaviour:
   - {x: 0.24934506, y: -0.18248081, z: 0}
   - {x: 3.0099158, y: -0.7396673, z: 0}
   - {x: 3.0005095, y: 0.5950161, z: 0}
+<<<<<<< HEAD
 --- !u!60 &4557795441644893583
+=======
+--- !u!60 &6957655680530859861
+>>>>>>> main
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
   m_GameObject: {fileID: 4557795441644893577}
+=======
+  m_GameObject: {fileID: 6957655680530859859}
+>>>>>>> main
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -105,13 +140,21 @@ PolygonCollider2D:
       - {x: 3.375949, y: -1.0818442}
       - {x: 3.3020735, y: -0.16053283}
       - {x: 3.2676444, y: 0.33441848}
+<<<<<<< HEAD
 --- !u!114 &4557795441644893581
+=======
+--- !u!114 &6957655680530859863
+>>>>>>> main
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< HEAD
   m_GameObject: {fileID: 4557795441644893577}
+=======
+  m_GameObject: {fileID: 6957655680530859859}
+>>>>>>> main
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5a79af9bd76da0049a60b1eed01043da, type: 3}
