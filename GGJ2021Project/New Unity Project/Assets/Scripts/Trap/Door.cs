@@ -11,8 +11,10 @@ public class Door : MonoBehaviour
     public float IncrementAmount;
     public bool open = false;
     public bool active = false;
-
- 
+    public Animator anim;
+    public Sprite lightedSprite;
+    public Sprite openSprite;
+    public SpriteRenderer sr;
     private Vector3 originPosition;
     public float shake_decay = 0.002f;
     public float shake_intensity = .3f;
@@ -20,31 +22,43 @@ public class Door : MonoBehaviour
     private float temp_shake_intensity = 0;
     public void Redo()
     {
-        active = false;
-        currentBattery = 0;
-        transform.position = originPosition;
+        if (!open)
+        {
+            active = false;
+            currentBattery = 0;
+            transform.position = originPosition;
+            anim.enabled = true;
+        }
     }
 
     public void Lit() {
-        active = true;
-        originPosition = transform.position;
-        temp_shake_intensity = shake_intensity;
-
+        if (!open)
+        {
+            active = true;
+            sr.sprite = lightedSprite;
+            anim.enabled = false;
+            originPosition = transform.position;
+            temp_shake_intensity = shake_intensity;
+        }
 
     }
+    private void Awake()
+    {
+        anim = GetComponent<Animator>();
+        sr = GetComponent<SpriteRenderer>();
+    }
 
-   
 
     private void Update()
     {
-        if (active)
+        if (active &&!open)
         {
             currentBattery += IncrementAmount;
             if (currentBattery >= totalBattery)
             {
                 open = true;
                 GetComponent<Collider2D>().isTrigger = true;
-
+                sr.sprite = openSprite;
             }
             transform.position = originPosition + Random.insideUnitSphere * temp_shake_intensity;
         }

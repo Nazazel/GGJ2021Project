@@ -11,6 +11,9 @@ GameObject:
   - component: {fileID: 716148515137290030}
   - component: {fileID: 716148515137290031}
   - component: {fileID: 5339648581903180345}
+  - component: {fileID: 4762551689778089552}
+  - component: {fileID: 4653327358098129460}
+  - component: {fileID: 2840995766923418277}
   m_Layer: 0
   m_Name: EyeDoor
   m_TagString: Untagged
@@ -27,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 716148515137290028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 115.15, y: -20.352665, z: 0.7722002}
-  m_LocalScale: {x: 13.501419, y: 42.719704, z: 6.9572525}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -71,8 +74,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 0.4811321, g: 0, b: 0.46966857, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 4ebe3e97db2b67842be8a51007154386, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -94,10 +97,80 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 583a94f85e818b241ab1b7491067bc7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalBattery: 0
+  totalBattery: 100
   currentBattery: 0
-  IncrementAmount: 0
+  IncrementAmount: 0.2
   open: 0
   active: 0
+  anim: {fileID: 0}
+  lightedSprite: {fileID: 21300000, guid: fdacb38bf29a3924eb503af21bb874c3, type: 3}
+  openSprite: {fileID: 21300000, guid: 4033254fa972fb74aaaf98b82f8f54f3, type: 3}
+  sr: {fileID: 0}
   shake_decay: 0.002
-  shake_intensity: 0.3
+  shake_intensity: 0.02
+--- !u!50 &4762551689778089552
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 716148515137290028}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!61 &4653327358098129460
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 716148515137290028}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.11111832, y: -0.095246315}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 4, y: 4.12}
+    newSize: {x: 3.84, y: 2.8}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.555687, y: 3.6033878}
+  m_EdgeRadius: 0
+--- !u!95 &2840995766923418277
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 716148515137290028}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 27dc987df25b0b848b0526e5b50484b8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

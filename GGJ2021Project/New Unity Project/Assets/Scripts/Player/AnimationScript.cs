@@ -26,7 +26,7 @@ public class AnimationScript : MonoBehaviour
             {
                 anim.Play("Character_Walk");
             }
-            else if (Input.GetButton("Jump"))
+            else if (Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.UpArrow))
             {
                 anim.Play("Character_Jump");
             }
