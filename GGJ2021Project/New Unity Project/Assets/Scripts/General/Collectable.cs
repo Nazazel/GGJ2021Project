@@ -13,10 +13,16 @@ public class Collectable : MonoBehaviour
     }
 
     public void Collect() {
-        if (maggot != null) 
+        if (maggot != null)
         {
             maggot.Alert();
         }
-    
+        else if (GameManager.maggot != null) {
+            maggot = GameManager.maggot.GetComponent<Chase>();
+            maggot.Alert();
+
+
+        }
+
     }
 }

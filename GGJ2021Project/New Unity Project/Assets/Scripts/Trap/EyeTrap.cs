@@ -11,7 +11,6 @@ public class EyeTrap : Lightable
     private void Awake()
     {
         activated = false;
-        maggot = FindObjectOfType<Chase>();
     }
 
 
@@ -19,7 +18,7 @@ public class EyeTrap : Lightable
     public void Lit() { Trip(); }
     public void Trip() { 
         activated = true;
-        if (enemy) { maggot.Trapped(); }
+        if (enemy &&maggot!=null) { maggot.Trapped(); }
         StartCoroutine(cool());
     }
 

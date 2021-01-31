@@ -26,6 +26,7 @@ public class Chase : MonoBehaviour
     public float SuspiciousDistance;
     public float AlertedSpeed;
     public float AlertedDistance;
+    public float LoseInterestRange;
     private Rigidbody2D rb;
     private Collider2D c2d;
     private Coroutine co;
@@ -39,6 +40,8 @@ public class Chase : MonoBehaviour
         play = player.GetComponent<PlayerMovement>();
         stunned = false;
         trapped = false;
+        GameManager.maggot = gameObject;
+
     }
     void Start()
     {
@@ -55,6 +58,7 @@ public class Chase : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log((Vector2.Distance(transform.position, target.transform.position)));
         Move(agent.velocity.x);
 
         //set states
@@ -100,12 +104,13 @@ public class Chase : MonoBehaviour
                 target = player;
                 gameObject.layer = 0;
                 play.isHidden = false;
+             //   if (Vector2.Distance(transform.position, target.transform.position) > LoseInterestRange) { state = State.patrol; }
                 break;
             case State.suspicious:
                 agent.speed = suspiciousSpeed;
                 target = player;
                 gameObject.layer = 12;
-
+                //if (Vector2.Distance(transform.position, target.transform.position) > LoseInterestRange) { state = State.patrol; }
                 break;
 
             case State.patrol:
@@ -162,13 +167,16 @@ IEnumerator Stun()
     }
 
     public void SetWayPoint() {
-        while (true)
+        if (wayPoints.Length >= 1)
         {
-            GameObject x = wayPoints[Random.Range(0, wayPoints.Length)];
-            if (x != target) { target = x; break; }
+            while (true)
+            {
+                GameObject x = wayPoints[Random.Range(0, wayPoints.Length)];
+                if (x != target) { target = x; break; }
+            }
+            state = State.patrol;
+            agent.SetDestination(target.transform.position);
         }
-        state = State.patrol;
-        agent.SetDestination(target.transform.position);
 
     }
 
@@ -210,19 +218,10 @@ IEnumerator Stun()
 
     public  void Respawn(Vector3 position, GameObject[] waypoints)  
     {
-        agent.Stop();
-        c2d.isTrigger = true;
-        transform.position = new Vector3(transform.position.x, transform.position.y, 1);
-        transform.position = new Vector3(position.x, position.y, 1);
-        transform.position = position;
-        wayPoints = waypoints;
-        trapped = false;
-        stunned = false;
-        c2d.isTrigger = false;
-
-        SetWayPoint();
-
-        agent.Resume();
+       
+        GameObject x = Instantiate(gameObject, position, transform.rotation);
+        x.GetComponent<Chase>().wayPoints = waypoints;
+        Destroy(gameObject);
 
     }
 

@@ -140,8 +140,8 @@ public class CharacterController : MonoBehaviour
                 m_AirControl = false;
             else m_AirControl = true;
 
-            print("Hit Wall: " + hitWall);
-            print("Grounded: " + m_Grounded);
+         //   print("Hit Wall: " + hitWall);
+          //  print("Grounded: " + m_Grounded);
         }
     }
 

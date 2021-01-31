@@ -220,6 +220,12 @@ public class PlayerMovement : MonoBehaviour
         {
             maggot.Alert();
         }
+        else if (GameManager.maggot != null) {
+            maggot = GameManager.maggot.GetComponent<Chase>();
+            maggot.Alert();
+
+
+        }
 
     }
 

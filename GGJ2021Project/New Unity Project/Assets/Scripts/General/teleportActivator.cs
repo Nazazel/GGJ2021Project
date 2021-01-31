@@ -20,6 +20,13 @@ public class teleportActivator : MonoBehaviour
             maggot.Respawn(SpawnPoint.transform.position,wayPoints);
         
         }
-    
+        else if (GameManager.maggot != null)
+        {
+            maggot = GameManager.maggot.GetComponent<Chase>();
+            maggot.Respawn(SpawnPoint.transform.position, wayPoints);
+
+
+        }
+
     }
 }
