@@ -27,11 +27,13 @@ public class Chase : MonoBehaviour
     public float AlertedSpeed;
     public float AlertedDistance;
     private Rigidbody2D rb;
+    private Collider2D c2d;
     private Coroutine co;
 
     // Start is called before the first frame update
     private void Awake()
     {
+        c2d = GetComponent<Collider2D>();
         rb = GetComponent<Rigidbody2D>();
         state = State.patrol;
         play = player.GetComponent<PlayerMovement>();
@@ -61,27 +63,27 @@ public class Chase : MonoBehaviour
 
 
             if (state == State.alerted && (Vector2.Distance(transform.position, player.transform.position)) < 1f) { state = State.patrol; }
-            else if ((Vector2.Distance(transform.position, player.transform.position)) < AlertedDistance && !stop && !play.isHidden)
+            else if ((Vector2.Distance(transform.position, player.transform.position)) < AlertedDistance && !stop && !play.isHidden && state!=State.alerted)
             {
                 state = State.alerted;
 
 
             }
-            else if ((Vector2.Distance(transform.position, player.transform.position)) < SuspiciousDistance && !stop && !play.isHidden)
+            else if ((Vector2.Distance(transform.position, player.transform.position)) < SuspiciousDistance && !stop && !play.isHidden && state != State.alerted)
             {
                 state = State.suspicious;
 
 
             }
 
-            else if ((Vector2.Distance(transform.position, target.transform.position)) < 1f && !stop && (target != player))
+            else if ((Vector2.Distance(transform.position, target.transform.position)) < 1f && !stop && (target != player) && state != State.alerted)
             {
 
                 SetWayPoint();
 
 
             }
-            else if ((Vector2.Distance(transform.position, player.transform.position)) < 1f && !stop && (target == player))
+            else if ((Vector2.Distance(transform.position, player.transform.position)) < 1f && !stop && (target == player) && state != State.alerted)
             {
 
                 SetWayPoint();
@@ -208,11 +210,20 @@ IEnumerator Stun()
 
     public  void Respawn(Vector3 position, GameObject[] waypoints)  
     {
+        agent.Stop();
+        c2d.isTrigger = true;
+        transform.position = new Vector3(transform.position.x, transform.position.y, 1);
+        transform.position = new Vector3(position.x, position.y, 1);
         transform.position = position;
         wayPoints = waypoints;
         trapped = false;
         stunned = false;
+        c2d.isTrigger = false;
+
         SetWayPoint();
+
+        agent.Resume();
+
     }
-        
-        }
+
+}

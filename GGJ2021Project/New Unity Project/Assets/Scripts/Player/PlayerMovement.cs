@@ -45,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
     private int CurrentCollectables;
     void Awake()
     {
+        CurrentCollectables = GameManager.count;
         controller = GetComponent<CharacterController>();
         rb2d = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
@@ -60,6 +61,11 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+    private void Start()
+    {
+        ui.Disable();
+        ui.counter(CurrentCollectables);
+    }
 
     // Update is called once per frame
     void Update()
@@ -70,7 +76,7 @@ public class PlayerMovement : MonoBehaviour
 
             flashLight.transform.position = transform.position;
             horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
-            if (Input.GetButtonDown("Jump"))
+            if (Input.GetButtonDown("Jump")||Input.GetKeyDown(KeyCode.UpArrow))
             {
                 jump = true;
                 jumpDistance = transform.position.y;
@@ -194,9 +200,17 @@ public class PlayerMovement : MonoBehaviour
         else if (other.tag == "pickup")
         {
             CurrentCollectables += 1;
+            GameManager.count++;
             other.GetComponent<Collectable>().Collect();
             Destroy(other.gameObject);
+            ui.counter(CurrentCollectables);
+
         }
+        else if (other.tag == "area")
+        {
+            other.GetComponent<teleportActivator>().MessageAI();
+        }
+
 
     }
 

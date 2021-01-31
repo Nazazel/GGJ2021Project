@@ -10,6 +10,7 @@ TagManager:
   - hurtbox
   - checkpoint
   - pickup
+  - area
   layers:
   - Default
   - TransparentFX
