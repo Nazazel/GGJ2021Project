@@ -194,9 +194,11 @@ public class PlayerMovement : MonoBehaviour
         if (other.tag == "hurtbox" )
         {
             if (other.gameObject.GetComponent<EyeTrap>() != null) {
-                if (!other.gameObject.GetComponent<EyeTrap>().activated) { }
+                if (!other.gameObject.GetComponent<EyeTrap>().activated)
+                {
                     other.gameObject.GetComponent<EyeTrap>().Trip();
                     death();
+                }
 
             }
 

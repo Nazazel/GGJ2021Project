@@ -35,11 +35,11 @@ public class CharacterController : MonoBehaviour
     public Vector3 velocity { get => m_Velocity; set => m_Velocity = value; }
     public float fallGravity { get => m_FallGravity; set => m_FallGravity = value; }
     public bool Grounded { get => m_Grounded; set => m_Grounded = value; }
-
-    //private Animator animator; //If using animations
+ 
 
     void Awake()
     {
+
         m_RigidBody2D = GetComponent<Rigidbody2D>();
         m_CapsuleCollider2D = GetComponent<CapsuleCollider2D>();
         //animator = GetComponent<Animator>(); //get animator component
