@@ -408,7 +408,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "Team Producer: \r\nNazely Hartoonian\r\n\r\n\r\nAI and Systems Programmer:
-    \r\nMayan Shoshani\r\n\r\nGameplay and Level Designer: \r\nPeter Doria\r\n\r\n\r\nCharacter
+    \r\nMayan Shoshani\r\n\r\n\nGameplay and Level Designer: \r\nPeter Doria\r\n\r\n\r\nCharacter
     and Environmental Artists:\r\nJordyn LaRocca\r\nJonah Aydin\r\nChloe Moon\r\n\r\n\r\nAudio
     Designers: \r\nChloe Moon\r\nNazely Hartoonian\r\n\t\r"
   m_isRightToLeft: 0
@@ -438,7 +438,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 21.25
+  m_fontSize: 20.25
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
