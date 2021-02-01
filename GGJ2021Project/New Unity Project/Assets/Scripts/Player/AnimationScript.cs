@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class AnimationScript : MonoBehaviour
 {
-    public CharacterController controller;
+    public CharacterController2D controller;
     public PlayerMovement player;
     public Animator anim;
     public bool fall;
@@ -19,7 +19,7 @@ public class AnimationScript : MonoBehaviour
     {
         AS = GetComponent<AudioSource>();
 
-        controller = GetComponent<CharacterController>();
+        controller = GetComponent<CharacterController2D>();
         player = GetComponent<PlayerMovement>();
         anim = GetComponent<Animator>();
     }

@@ -30,10 +30,19 @@ public class Chase : MonoBehaviour
     private Rigidbody2D rb;
     private Collider2D c2d;
     private Coroutine co;
+    private AudioSource AS;
+    public AudioClip move;
+    public AudioClip sus;
+    public AudioClip alert;
+    public AudioClip stun;
+
+
+
 
     // Start is called before the first frame update
     private void Awake()
     {
+        AS = GetComponent<AudioSource>();
         animator = GetComponent<Animator>();
         if (player == null) { player = GameObject.FindGameObjectWithTag("Player"); }
         c2d = GetComponent<Collider2D>();
@@ -71,29 +80,42 @@ public class Chase : MonoBehaviour
             if (state == State.alerted && (Vector2.Distance(transform.position, player.transform.position)) < 1f) { state = State.patrol; }
             else if ((Vector2.Distance(transform.position, player.transform.position)) < AlertedDistance && !stop && !play.isHidden && state!=State.alerted)
             {
-                state = State.alerted;
+                if (state != State.alerted)
+                {
+                    state = State.alerted;
+                    AS.PlayOneShot(alert);
 
-
+                }
             }
             else if ((Vector2.Distance(transform.position, player.transform.position)) < SuspiciousDistance && !stop && !play.isHidden && state != State.alerted)
             {
-                state = State.suspicious;
+                if (state != State.suspicious)
+                {
+                    state = State.suspicious;
+                    AS.PlayOneShot(sus);
+                }
+               
+
 
 
             }
 
             else if ((Vector2.Distance(transform.position, target.transform.position)) < 1f && !stop && (target != player) && state != State.alerted)
             {
-                state = State.patrol;
+              
+                    state = State.patrol;
+                    AS.PlayOneShot(move);
 
-                SetWayPoint();
-
+                    SetWayPoint();
+               
 
             }
             else if ((Vector2.Distance(transform.position, player.transform.position)) < 1f && !stop && (target == player) && state != State.alerted)
             {
+                
                 animator.SetBool("attacking", true);
                 state = State.patrol;
+                AS.PlayOneShot(alert);
 
                 SetWayPoint();
 
@@ -126,12 +148,15 @@ public class Chase : MonoBehaviour
                 agent.speed = PatrolSpeed;
                 if (target == player) { SetWayPoint(); }
                 gameObject.layer = 12;
-
                 break;
 
 
         }
-        if (GameManager.won) { agent.Stop(); }
+        if (GameManager.won)
+        {
+            agent.isStopped = true;
+            
+        }
         else
         {
             agent.SetDestination(target.transform.position);
@@ -151,7 +176,7 @@ public class Chase : MonoBehaviour
 IEnumerator Stun()
     {
         rb.velocity = Vector2.zero;
-        agent.Stop();
+        agent.isStopped = true;
         rb.isKinematic = true;
         c2d.isTrigger = true;
         stunned = true;
@@ -159,7 +184,7 @@ IEnumerator Stun()
         stunned = false;
         c2d.isTrigger = false;
         rb.isKinematic = false;
-        agent.Resume();
+        agent.isStopped = false;
         animator.SetBool("stunned", false);
         SetWayPoint();
 
@@ -169,12 +194,12 @@ IEnumerator Stun()
     {
         rb.velocity = Vector2.zero;
         rb.isKinematic = true;
-        agent.Stop();
+        agent.isStopped = true;
         trapped = true;
         yield return new WaitForSeconds(TrapTime);
         trapped = false;
         rb.isKinematic = false;
-        agent.Resume();
+        agent.isStopped=false;
         animator.SetBool("stunned", false);
         SetWayPoint();
     }
@@ -233,6 +258,8 @@ IEnumerator Stun()
     }
 
     public void Alert() {
+        AS.PlayOneShot(sus);
+
         state = State.suspicious;
         target = player;
     }
@@ -240,6 +267,7 @@ IEnumerator Stun()
     public void Calm() {
         animator.SetBool("attacking", true);
         state = State.patrol;
+        AS.PlayOneShot(move);
 
         SetWayPoint();
 

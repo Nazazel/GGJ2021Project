@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterController : MonoBehaviour
+public class CharacterController2D : MonoBehaviour
 {
 
     /// <summary>
@@ -26,7 +26,7 @@ public class CharacterController : MonoBehaviour
     public bool m_FacingRight = true;
     private int m_AirJumpsLeft;
     private Vector3 m_Velocity = Vector3.zero;
-    private GameObject light;
+    private GameObject flashlight;
     [HideInInspector] public Rigidbody2D m_RigidBody2D;
     [HideInInspector] public CapsuleCollider2D m_CapsuleCollider2D;
     private AudioSource AS;
@@ -98,7 +98,7 @@ public class CharacterController : MonoBehaviour
         }
     }
 
-    public void SetLight(GameObject flash) { light = flash; }
+    public void SetLight(GameObject flash) { flashlight = flash; }
 
 
     //Enhances the Jump by adding gravity when falling, short hop, and full hop
@@ -121,7 +121,7 @@ public class CharacterController : MonoBehaviour
         Vector2 localScale = gameObject.transform.localScale;
         localScale.x *= -1;
         transform.localScale = localScale;
-        light.transform.localScale = localScale;
+        flashlight.transform.localScale = localScale;
     }
 
     void OnTriggerEnter2D(Collider2D collide)

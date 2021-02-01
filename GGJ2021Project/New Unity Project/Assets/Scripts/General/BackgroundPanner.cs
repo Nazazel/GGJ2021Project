@@ -6,8 +6,7 @@ public class BackgroundPanner : MonoBehaviour
 {
     [SerializeField]
     private float m_Frequency, m_Amplitude, m_MaxTimeSinceSwitch;
-    private float m_TimeSinceSwitch = 0;
-    private float m_XPosLastUpdate = 0;
+
 
     private void LateUpdate()
     {
