@@ -8,10 +8,15 @@ public class AnimationScript : MonoBehaviour
     public PlayerMovement player;
     public Animator anim;
     public bool fall;
+    private AudioSource AS;
+    public AudioClip walk;
+
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+        AS = GetComponent<AudioSource>();
+
         controller = GetComponent<CharacterController>();
         player = GetComponent<PlayerMovement>();
         anim = GetComponent<Animator>();
@@ -25,8 +30,9 @@ public class AnimationScript : MonoBehaviour
             if (Input.GetAxisRaw("Horizontal") != 0 && controller.IsGrounded())
             {
                 anim.Play("Character_Walk");
+                // AS.PlayOneShot(walk);
             }
-            else if (Input.GetButton("Jump"))
+            else if (Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.UpArrow))
             {
                 anim.Play("Character_Jump");
             }

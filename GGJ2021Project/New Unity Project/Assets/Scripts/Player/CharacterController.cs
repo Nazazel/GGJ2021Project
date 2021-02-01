@@ -29,6 +29,8 @@ public class CharacterController : MonoBehaviour
     private GameObject light;
     [HideInInspector] public Rigidbody2D m_RigidBody2D;
     [HideInInspector] public CapsuleCollider2D m_CapsuleCollider2D;
+    private AudioSource AS;
+    public AudioClip jumps;
 
     public Transform GroundCheck { get => m_GroundCheck; set => m_GroundCheck = value; }
     public float jumpsRemaining { get => m_AirJumpsLeft; }
@@ -39,6 +41,7 @@ public class CharacterController : MonoBehaviour
 
     void Awake()
     {
+        AS = GetComponent<AudioSource>();
 
         m_RigidBody2D = GetComponent<Rigidbody2D>();
         m_CapsuleCollider2D = GetComponent<CapsuleCollider2D>();
@@ -48,7 +51,7 @@ public class CharacterController : MonoBehaviour
     void FixedUpdate()
     {
         // AH WHAT IS THE SIZE
-        m_Grounded = Physics2D.CapsuleCast(transform.position, new Vector2(m_CapsuleCollider2D.bounds.size.x * 0.9f, m_CapsuleCollider2D.bounds.size.y * 0.9f), CapsuleDirection2D.Vertical, 0, Vector2.down, transform.position.y - m_GroundCheck.position.y, m_GroundLayer);
+        m_Grounded = Physics2D.CapsuleCast(transform.position, new Vector2(m_CapsuleCollider2D.bounds.size.x * 0.9f, m_CapsuleCollider2D.bounds.size.y * 0.5f), CapsuleDirection2D.Vertical, 0, Vector2.down, transform.position.y - m_GroundCheck.position.y, m_GroundLayer);
         if (m_Grounded)
             m_AirJumpsLeft = m_AirJumps;
 
@@ -81,6 +84,7 @@ public class CharacterController : MonoBehaviour
 
         if (m_Grounded && jump)
         {
+            AS.PlayOneShot(jumps);
             m_Grounded = false;
             m_RigidBody2D.AddForce(new Vector2(m_RigidBody2D.velocity.x, m_JumpForce));
         }
