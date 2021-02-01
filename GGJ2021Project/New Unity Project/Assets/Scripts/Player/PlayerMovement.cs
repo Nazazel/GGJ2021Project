@@ -233,6 +233,11 @@ public class PlayerMovement : MonoBehaviour
         {
             other.GetComponent<teleportActivator>().MessageAI();
         }
+        if (other.tag == "transition") 
+        {
+
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
         
 
 
