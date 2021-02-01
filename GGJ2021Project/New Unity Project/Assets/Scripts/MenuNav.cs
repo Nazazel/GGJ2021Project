@@ -4,27 +4,34 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-public class MenuNav : MonoBehaviour
+public class MenuNav : MonoBehaviour, IPointerDownHandler
 {
-    public enum button { game,credits,quit ,menu }
+    public enum button { game,credits,quit ,menu, next }
     public button btn;
     public void OnPointerDown(PointerEventData eventData)
     {
         switch (btn)
         {
             case (button.game):
-                SceneManager.LoadScene(1);
+                SceneManager.LoadScene("Intro");
+                Debug.Log("started game");
                 break;
             case (button.credits):
-                SceneManager.LoadScene(2);
+                SceneManager.LoadScene("Credit");
                 break;
             case (button.quit):
-                SceneManager.LoadScene("Credit");
+                Application.Quit();
                 break;
             case (button.menu):
                 SceneManager.LoadScene(2);
                 break;
 
+        }
+    }
+    private void Update()
+    {
+        if (button.next == btn && Input.GetKeyDown(KeyCode.Return)) {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 }

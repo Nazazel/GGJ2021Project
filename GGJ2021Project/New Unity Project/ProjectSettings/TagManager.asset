@@ -12,6 +12,7 @@ TagManager:
   - pickup
   - area
   - fall
+  - transition
   layers:
   - Default
   - TransparentFX
