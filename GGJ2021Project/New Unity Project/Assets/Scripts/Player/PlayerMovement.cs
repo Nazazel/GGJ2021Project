@@ -43,12 +43,19 @@ public class PlayerMovement : MonoBehaviour
     public UIManager ui;
     public Chase maggot;
 
+    private AudioSource AS;
+    public AudioClip fonn;
+    public AudioClip foff;
+    public AudioClip scream;
+
+
 
 
     public int collectableAmount=3;
     private int CurrentCollectables;
     void Awake()
     {
+        AS = GetComponent<AudioSource>();
         CurrentCollectables = GameManager.count;
         controller = GetComponent<CharacterController>();
         rb2d = GetComponent<Rigidbody2D>();
@@ -85,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
 
             flashLight.transform.position = transform.position;
             horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
-            if (Input.GetButtonDown("Jump")||Input.GetKeyDown(KeyCode.UpArrow))
+            if (Input.GetButtonDown("Jump")||Input.GetKeyDown(KeyCode.UpArrow) )
             {
                 jump = true;
                 jumpDistance = transform.position.y;
@@ -261,10 +268,12 @@ public class PlayerMovement : MonoBehaviour
         if (flashLight.activeSelf)
         {
             flashLight.SetActive(false);
+            AS.PlayOneShot(foff);
         }
         else {
             if (battery > 0)
             {
+                AS.PlayOneShot(fonn);
                 flashLight.SetActive(true);
             }
 
@@ -290,6 +299,8 @@ public class PlayerMovement : MonoBehaviour
     #region  deaths
     private void death()
     {
+        ui.Die();
+        AS.PlayOneShot(scream);
         if (flashLight.activeSelf) { LightSwitch(); }
         transform.position = respawnPoint.transform.position;
         rb2d.velocity = Vector3.zero;
