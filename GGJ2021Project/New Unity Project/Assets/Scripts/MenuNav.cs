@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class MenuNav : MonoBehaviour, IPointerDownHandler
 {
-    public enum button { game,credits,quit ,menu, next }
+    public enum button { game,credits,quit ,menu, next, backHome }
     public button btn;
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -23,7 +23,7 @@ public class MenuNav : MonoBehaviour, IPointerDownHandler
                 Application.Quit();
                 break;
             case (button.menu):
-                SceneManager.LoadScene(2);
+                SceneManager.LoadScene("Menu");
                 break;
 
         }
@@ -32,6 +32,10 @@ public class MenuNav : MonoBehaviour, IPointerDownHandler
     {
         if (button.next == btn && Input.GetKeyDown(KeyCode.Return)) {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
+        if (button.backHome == btn && Input.GetKeyDown(KeyCode.Return))
+        {
+            SceneManager.LoadScene("Menu");
         }
     }
 }
