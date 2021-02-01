@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class AnimationScript : MonoBehaviour
 {
@@ -20,6 +22,10 @@ public class AnimationScript : MonoBehaviour
         controller = GetComponent<CharacterController>();
         player = GetComponent<PlayerMovement>();
         anim = GetComponent<Animator>();
+    }
+    private void Start()
+    {
+        if (SceneManager.GetActiveScene().name == "Level2") { fall = true; }
     }
 
     // Update is called once per frame
