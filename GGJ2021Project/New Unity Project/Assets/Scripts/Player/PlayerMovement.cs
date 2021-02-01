@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditorInternal.VR;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Experimental.Rendering.Universal; //2019 VERSIONS
@@ -17,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float runSpeed;
     float horizontalMove = 0f;
     bool jump = false;
-    public CharacterController controller;
+    public CharacterController2D controller;
     public GameObject flashLight;
     public Transform respawnPoint;
     public float respawnTime;
@@ -57,7 +56,7 @@ public class PlayerMovement : MonoBehaviour
     {
         AS = GetComponent<AudioSource>();
         CurrentCollectables = GameManager.count;
-        controller = GetComponent<CharacterController>();
+        controller = GetComponent<CharacterController2D>();
         rb2d = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
         respawning = false;
@@ -115,13 +114,13 @@ public class PlayerMovement : MonoBehaviour
             }
             if (Input.GetAxisRaw("Horizontal") == 0 && controller.IsGrounded())
             {
-                if (Input.GetKeyDown(KeyCode.Q) && keyAlternate == false && !flashLight.active)
+                if (Input.GetKeyDown(KeyCode.Q) && keyAlternate == false && !flashLight.activeSelf)
                 {
                     keyAlternate = true;
                     ChargeBattery();
 
                 }
-                else if (Input.GetKeyDown(KeyCode.E) && keyAlternate == true && !flashLight.active)
+                else if (Input.GetKeyDown(KeyCode.E) && keyAlternate == true && !flashLight.activeSelf)
                 {
                     keyAlternate = false;
                     ChargeBattery();
@@ -129,18 +128,18 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
 
-            if (currentBattery <= 0 && flashLight.active) { LightSwitch(); }
+            if (currentBattery <= 0 && flashLight.activeSelf) { LightSwitch(); }
             if (currentBattery >= 0)
             {
-                if (currentBattery - LightCost >= 0 &&!flashLight.active)
+                if (currentBattery - LightCost >= 0 &&!flashLight.activeSelf)
                     currentBattery -= LightCost;
-                else if (currentBattery - (LightCost*LightMultiplier) >= 0 && flashLight.active)
+                else if (currentBattery - (LightCost*LightMultiplier) >= 0 && flashLight.activeSelf)
                     currentBattery -= (LightCost * LightMultiplier);
                 else
                     currentBattery = 0;
 
             }
-            if (flashLight.active)
+            if (flashLight.activeSelf)
             {
 
                 if (currentBattery > 10)
@@ -290,7 +289,7 @@ public class PlayerMovement : MonoBehaviour
     public void Hide() {
         SR.enabled = false;
         gameObject.layer = 11;
-        if (flashLight.active) { LightSwitch(); }
+        if (flashLight.activeSelf) { LightSwitch(); }
         isHidden = true;
     }
     public void Unhide() {

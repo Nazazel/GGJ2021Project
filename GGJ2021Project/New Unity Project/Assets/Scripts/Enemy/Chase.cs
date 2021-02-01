@@ -152,7 +152,11 @@ public class Chase : MonoBehaviour
 
 
         }
-        if (GameManager.won) { agent.Stop(); }
+        if (GameManager.won)
+        {
+            agent.isStopped = true;
+            
+        }
         else
         {
             agent.SetDestination(target.transform.position);
@@ -172,7 +176,7 @@ public class Chase : MonoBehaviour
 IEnumerator Stun()
     {
         rb.velocity = Vector2.zero;
-        agent.Stop();
+        agent.isStopped = true;
         rb.isKinematic = true;
         c2d.isTrigger = true;
         stunned = true;
@@ -180,7 +184,7 @@ IEnumerator Stun()
         stunned = false;
         c2d.isTrigger = false;
         rb.isKinematic = false;
-        agent.Resume();
+        agent.isStopped = false;
         animator.SetBool("stunned", false);
         SetWayPoint();
 
@@ -190,12 +194,12 @@ IEnumerator Stun()
     {
         rb.velocity = Vector2.zero;
         rb.isKinematic = true;
-        agent.Stop();
+        agent.isStopped = true;
         trapped = true;
         yield return new WaitForSeconds(TrapTime);
         trapped = false;
         rb.isKinematic = false;
-        agent.Resume();
+        agent.isStopped=false;
         animator.SetBool("stunned", false);
         SetWayPoint();
     }

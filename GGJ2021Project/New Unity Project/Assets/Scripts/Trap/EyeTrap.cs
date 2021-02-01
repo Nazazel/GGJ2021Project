@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EyeTrap : Lightable
+public class EyeTrap : MonoBehaviour
 {
     public bool activated;
     public float cooldown;
