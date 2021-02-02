@@ -146,7 +146,8 @@ public class CharacterController2D : MonoBehaviour
     {
         if (collide.gameObject.tag == "hurtbox" && this.gameObject.transform.position.y - collide.gameObject.transform.position.y >= 0)
         {
-            //m_RigidBody2D.velocity = new Vector2(m_RigidBody2D.velocity.x, m_JumpForceOnEnemies);
+
+            m_RigidBody2D.velocity = new Vector2(0, 0);
         }
     }
 
