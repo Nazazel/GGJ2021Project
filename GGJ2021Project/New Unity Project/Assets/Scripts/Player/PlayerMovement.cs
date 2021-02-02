@@ -91,7 +91,7 @@ public class PlayerMovement : MonoBehaviour
                 }
         if (!respawning)
         {
-            if (CurrentCollectables == collectableAmount) { Win(); }
+           // if (CurrentCollectables == collectableAmount) { Win(); }
 
             flashLight.transform.position = lightSpot.transform.position;
             horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
@@ -202,6 +202,7 @@ public class PlayerMovement : MonoBehaviour
         GameManager.won = true;
     }
 
+
     public void ChargeBattery() {
         time = 0;
         charging = true;
@@ -271,7 +272,7 @@ public class PlayerMovement : MonoBehaviour
         }
         if (other.tag == "transition") 
         {
-
+            ui.Transition();
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
         

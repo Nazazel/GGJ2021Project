@@ -25,6 +25,11 @@ public class UIManager : MonoBehaviour
     
     }
 
+    public void Transition() {
+
+        death.enabled = true;
+
+    }
     public void Disable()
     {
         images[0].enabled = false;
