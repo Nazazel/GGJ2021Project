@@ -227,7 +227,6 @@ public class PlayerMovement : MonoBehaviour
 
 
                     death();
-                    Destroy(other.gameObject);
                 }
             }
         }
@@ -344,7 +343,8 @@ public class PlayerMovement : MonoBehaviour
 
         ui.Die();
         AS.PlayOneShot(scream);
-        
+        if (GameManager.maggot != null) { Destroy(GameManager.maggot); }
+
         if (flashLight.activeSelf) { LightSwitch(); }
         transform.position = respawnPoint.transform.position;
         rb2d.velocity = Vector2.zero;
