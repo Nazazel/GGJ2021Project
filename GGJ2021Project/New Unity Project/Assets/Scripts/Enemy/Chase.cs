@@ -115,7 +115,6 @@ public class Chase : MonoBehaviour
             {
                 
                 animator.SetBool("attacking", true);
-                state = State.patrol;
                 AS.PlayOneShot(alert);
 
                 SetWayPoint();
