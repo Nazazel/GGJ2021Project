@@ -94,6 +94,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maggot: {fileID: 0}
   SpawnPoint: {fileID: 0}
-  wayPoints:
-  - {fileID: 0}
-  - {fileID: 0}
+  wayPoints: []
