@@ -41,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
     private bool keyAlternate;
     public UIManager ui;
     public Chase maggot;
-
+    public GameObject lightSpot;
     public AudioSource backgroundAudio;
     public AudioClip patrol;
     public AudioClip sus;
@@ -93,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (CurrentCollectables == collectableAmount) { Win(); }
 
-            flashLight.transform.position = transform.position;
+            flashLight.transform.position = lightSpot.transform.position;
             horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
             if (Input.GetButtonDown("Jump")||Input.GetKeyDown(KeyCode.UpArrow) )
             {
@@ -154,6 +154,12 @@ public class PlayerMovement : MonoBehaviour
             }
 
             ui.setAmount(currentBattery);
+        }
+        else
+        {
+            rb2d.velocity = Vector2.zero;
+
+
         }
     }
 
@@ -336,7 +342,7 @@ public class PlayerMovement : MonoBehaviour
         AS.PlayOneShot(scream);
         if (flashLight.activeSelf) { LightSwitch(); }
         transform.position = respawnPoint.transform.position;
-        rb2d.velocity = Vector3.zero;
+        rb2d.velocity = Vector2.zero;
         if (maggot != null)
         {
             maggot.Calm();
