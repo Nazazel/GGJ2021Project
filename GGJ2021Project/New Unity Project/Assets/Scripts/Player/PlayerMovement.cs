@@ -212,11 +212,14 @@ public class PlayerMovement : MonoBehaviour
     {
         if (other.gameObject.tag == "hurtbox")
         {
-            if (!other.gameObject.GetComponent<Chase>().stunned && !other.gameObject.GetComponent<Chase>().trapped && !isHidden)
+            if (other.gameObject.GetComponent<Chase>() != null)
             {
+                if (!other.gameObject.GetComponent<Chase>().stunned && !other.gameObject.GetComponent<Chase>().trapped && !isHidden)
+                {
 
 
-                death();
+                    death();
+                }
             }
         }
     }
