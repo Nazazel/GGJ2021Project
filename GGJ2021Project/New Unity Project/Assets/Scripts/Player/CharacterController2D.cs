@@ -84,6 +84,8 @@ public class CharacterController2D : MonoBehaviour
 
         if (m_Grounded && jump)
         {
+            AS.pitch = Random.Range(0.9f, 1.1f);
+            AS.volume = 0.08f;
             AS.PlayOneShot(jumps);
             m_Grounded = false;
             m_RigidBody2D.AddForce(new Vector2(m_RigidBody2D.velocity.x, m_JumpForce));
