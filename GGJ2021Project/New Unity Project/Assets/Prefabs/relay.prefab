@@ -95,3 +95,4 @@ MonoBehaviour:
   maggot: {fileID: 0}
   SpawnPoint: {fileID: 0}
   wayPoints: []
+  prefab: {fileID: 2144251520944145269, guid: 98f243f156ad0de458b7c4ff2ff51c85, type: 3}

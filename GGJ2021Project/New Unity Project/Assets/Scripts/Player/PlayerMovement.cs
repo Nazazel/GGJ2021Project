@@ -227,6 +227,7 @@ public class PlayerMovement : MonoBehaviour
 
 
                     death();
+                    Destroy(other.gameObject);
                 }
             }
         }
@@ -340,8 +341,10 @@ public class PlayerMovement : MonoBehaviour
     #region  deaths
     private void death()
     {
+
         ui.Die();
         AS.PlayOneShot(scream);
+        
         if (flashLight.activeSelf) { LightSwitch(); }
         transform.position = respawnPoint.transform.position;
         rb2d.velocity = Vector2.zero;
