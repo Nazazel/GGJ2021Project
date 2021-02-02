@@ -105,13 +105,31 @@ public class CharacterController2D : MonoBehaviour
     void JumpGravity(bool jump)
     {
         if (jump && m_AirJumpsLeft >= 1)
+        {
             m_RigidBody2D.velocity = new Vector2(m_RigidBody2D.velocity.x, 0); //resets gravity if player jumps in the air so we the momentum doesnt kill the jump force
+        }
+        if (m_RigidBody2D.velocity.y < 0) {//we are falling, therefore increase gravity down
 
-        if (m_RigidBody2D.velocity.y < 0) //we are falling, therefore increase gravity down
             m_RigidBody2D.velocity += Vector2.up * Physics2D.gravity.y * (m_FallGravity - 1) * Time.deltaTime;
+            bool hitWall;
+            int dir = m_FacingRight ? 1 : -1;
 
-        else if (m_RigidBody2D.velocity.y > 0 && !Input.GetButton("Jump"))//Tab Jump
-            m_RigidBody2D.velocity += Vector2.up * Physics2D.gravity.y * (m_FallGravity - 1) * Time.deltaTime;
+            hitWall = Physics2D.CapsuleCast(transform.position, new Vector2(m_CapsuleCollider2D.bounds.size.x, m_CapsuleCollider2D.bounds.size.y), CapsuleDirection2D.Vertical, 0, Vector2.right * dir, m_CapsuleCollider2D.bounds.size.x, m_GroundLayer);
+            if (hitWall)
+                m_AirControl = false;
+            else m_AirControl = true;
+        }
+
+        else if (m_RigidBody2D.velocity.y > 0 && !Input.GetButton("Jump")) {//Tab Jump
+                m_RigidBody2D.velocity += Vector2.up * Physics2D.gravity.y * (m_FallGravity - 1) * Time.deltaTime;
+            bool hitWall;
+            int dir = m_FacingRight ? 1 : -1;
+
+            hitWall = Physics2D.CapsuleCast(transform.position, new Vector2(m_CapsuleCollider2D.bounds.size.x, m_CapsuleCollider2D.bounds.size.y), CapsuleDirection2D.Vertical, 0, Vector2.right * dir, m_CapsuleCollider2D.bounds.size.x, m_GroundLayer);
+                if (hitWall)
+                    m_AirControl = false;
+                else m_AirControl = true;
+            }
     }
 
     //Turns around the gameObject attach to this script
