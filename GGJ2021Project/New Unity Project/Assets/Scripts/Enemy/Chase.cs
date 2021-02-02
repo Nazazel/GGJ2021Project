@@ -83,6 +83,7 @@ public class Chase : MonoBehaviour
                 {
                     state = State.alerted;
                     AS.PlayOneShot(alert);
+                    play.MusicController(state);
 
                 }
             }
@@ -92,8 +93,10 @@ public class Chase : MonoBehaviour
                 {
                     state = State.suspicious;
                     AS.PlayOneShot(sus);
+                    play.MusicController(state);
+
                 }
-               
+
 
 
 
@@ -103,9 +106,8 @@ public class Chase : MonoBehaviour
             {
               
                     state = State.patrol;
-                    AS.PlayOneShot(move);
 
-                    SetWayPoint();
+                SetWayPoint();
                
 
             }
@@ -212,6 +214,9 @@ IEnumerator Stun()
                 if (x != target) { target = x; break; }
             }
             state = State.patrol;
+            play.MusicController(state);
+            AS.PlayOneShot(move);
+
             agent.SetDestination(target.transform.position);
         }
 
@@ -257,16 +262,20 @@ IEnumerator Stun()
     }
 
     public void Alert() {
-        AS.PlayOneShot(sus);
+        if (state != State.suspicious)
+        {
+            AS.PlayOneShot(sus);
+            state = State.suspicious;
+            play.MusicController(state);
 
-        state = State.suspicious;
+
+        }
         target = player;
     }
 
     public void Calm() {
         animator.SetBool("attacking", true);
         state = State.patrol;
-        AS.PlayOneShot(move);
 
         SetWayPoint();
 

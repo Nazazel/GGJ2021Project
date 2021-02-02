@@ -42,6 +42,10 @@ public class PlayerMovement : MonoBehaviour
     public UIManager ui;
     public Chase maggot;
 
+    public AudioSource backgroundAudio;
+    public AudioClip patrol;
+    public AudioClip sus;
+    public AudioClip alert;
     private AudioSource AS;
     public AudioClip fonn;
     public AudioClip foff;
@@ -162,6 +166,28 @@ public class PlayerMovement : MonoBehaviour
         
     }
 
+
+    public void MusicController(Chase.State s) {
+        switch (s) {
+
+            case Chase.State.patrol:
+                if (backgroundAudio.clip != patrol)
+                {
+                    backgroundAudio.clip = patrol;
+                }
+                break;
+            case Chase.State.suspicious:
+                backgroundAudio.clip = sus;
+
+                break;
+            case Chase.State.alerted:
+                backgroundAudio.clip = alert;
+                break;
+        }
+        backgroundAudio.Play();
+    
+    
+    }
 
     private void Win() 
     {

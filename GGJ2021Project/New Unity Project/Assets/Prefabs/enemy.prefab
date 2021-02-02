@@ -134,9 +134,9 @@ MonoBehaviour:
   state: 0
   PatrolSpeed: 2.5
   suspiciousSpeed: 1.5
-  SuspiciousDistance: 5
-  AlertedSpeed: 4
-  AlertedDistance: 2.5
+  SuspiciousDistance: 10
+  AlertedSpeed: 5
+  AlertedDistance: 4
   LoseInterestRange: 0
   move: {fileID: 8300000, guid: 8aa6a882247f4e848a91d79477bec985, type: 3}
   sus: {fileID: 8300000, guid: f51eec244c039c74d9810147068a0c87, type: 3}
@@ -221,13 +221,13 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.301
   m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 116
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
