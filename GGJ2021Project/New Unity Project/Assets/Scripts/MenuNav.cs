@@ -17,7 +17,7 @@ public class MenuNav : MonoBehaviour, IPointerDownHandler
                 Debug.Log("started game");
                 break;
             case (button.credits):
-                SceneManager.LoadScene("Credit");
+                SceneManager.LoadScene("Credits");
                 break;
             case (button.quit):
                 Application.Quit();
