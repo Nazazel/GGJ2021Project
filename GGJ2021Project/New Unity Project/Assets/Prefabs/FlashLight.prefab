@@ -45,18 +45,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_LightType: 3
+  m_LightType: 1
   m_BlendStyleIndex: 2
-  m_FalloffIntensity: 0.326
+  m_FalloffIntensity: 0.637
   m_Color: {r: 1, g: 0.8342812, b: 0.6698113, a: 1}
   m_Intensity: 1
-  m_LightVolumeOpacity: 0.47
+  m_LightVolumeOpacity: 0.351
   m_ApplyToSortingLayers: 00000000
   m_LightCookieSprite: {fileID: 0}
   m_UseNormalMap: 0
   m_LightOrder: 0
   m_AlphaBlendOnOverlap: 0
-  m_ShadowIntensity: 0.436
+  m_ShadowIntensity: 0.502
   m_ShadowVolumeIntensity: 1
   m_PointLightInnerAngle: 0
   m_PointLightOuterAngle: 25
@@ -99,11 +99,11 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 3.2564445, y: 0.9122634}
+    - - {x: 3.2645044, y: 0.94450355}
       - {x: 0.07334077, y: -0.09997344}
       - {x: -0.22360557, y: -0.24652192}
       - {x: 0.2504652, y: -0.4025923}
-      - {x: 3.375949, y: -1.0818442}
+      - {x: 3.3195286, y: -1.0899044}
       - {x: 3.3020735, y: -0.16053283}
       - {x: 3.2676444, y: 0.33441848}
 --- !u!114 &661330696801146823
