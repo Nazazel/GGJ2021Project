@@ -308,7 +308,7 @@ MonoBehaviour:
   charging: 0
   waitCharge: 0.3
   batteryCharge: 1
-  LightCost: 0.005
+  LightCost: 0.03
   LightMultiplier: 2
   ui: {fileID: 0}
   maggot: {fileID: 0}
