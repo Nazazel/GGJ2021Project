@@ -51,8 +51,11 @@ public class PlayerMovement : MonoBehaviour
     public AudioClip foff;
     public AudioClip scream;
 
-
-
+    private Light2D finalLight;
+    private Light2D globalLight;
+    private bool finalTransition = false;
+    private float t = 0;
+    private float initialLightIntensity;
 
     public int collectableAmount=3;
     private int CurrentCollectables;
@@ -72,6 +75,12 @@ public class PlayerMovement : MonoBehaviour
         flashLight.SetActive(false);
         maggot = FindObjectOfType<Chase>();
 
+        if (SceneManager.GetActiveScene().name == "Level3")
+        {
+            finalLight = GameObject.FindGameObjectWithTag("finalLight").GetComponent<Light2D>();
+            initialLightIntensity = finalLight.intensity;
+            globalLight = GameObject.FindGameObjectWithTag("globalLight").GetComponent<Light2D>();
+        }
 
     }
 
@@ -160,6 +169,17 @@ public class PlayerMovement : MonoBehaviour
             rb2d.velocity = Vector2.zero;
 
 
+        }
+
+        if (finalTransition)
+        {
+            t += Time.deltaTime * 0.2f;
+            finalLight.intensity = Mathf.Lerp(initialLightIntensity, 0, t);
+            globalLight.intensity = Mathf.Lerp(0.1f, 0, t);
+            if (t >= 1 )
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            }
         }
     }
 
@@ -272,8 +292,15 @@ public class PlayerMovement : MonoBehaviour
         }
         if (other.tag == "transition") 
         {
-            ui.Transition();
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            if (finalLight)
+            {
+                finalTransition = true;
+            }
+            else
+            {
+                ui.Transition();
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            }
         }
         
 

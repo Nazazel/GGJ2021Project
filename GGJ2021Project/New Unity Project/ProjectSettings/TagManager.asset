@@ -13,6 +13,8 @@ TagManager:
   - area
   - fall
   - transition
+  - finalLight
+  - globalLight
   layers:
   - Default
   - TransparentFX
