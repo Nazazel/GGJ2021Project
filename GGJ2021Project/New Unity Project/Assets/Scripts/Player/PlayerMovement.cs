@@ -166,9 +166,11 @@ public class PlayerMovement : MonoBehaviour
     // FixedUpdate is called multiple times per x amount of frames
     private void FixedUpdate()
     {
-        controller.Move(horizontalMove * Time.fixedDeltaTime, jump);
-        jump = false;
-
+        if (!respawning)
+        {
+            controller.Move(horizontalMove * Time.fixedDeltaTime, jump);
+            jump = false;
+        }
         
     }
 
@@ -364,6 +366,8 @@ public class PlayerMovement : MonoBehaviour
     {
         respawning = true;
         SR.enabled = false;
+        rb2d.velocity = Vector3.zero;
+
         yield return new WaitForSeconds(respawnTime);
         respawning = false;
         currentBattery = battery;

@@ -483,7 +483,7 @@ MonoBehaviour:
   - {fileID: 6683831839336470673}
   - {fileID: 6683831838615726189}
   death: {fileID: 5134917732739797687}
-  respawnTime: 3
+  respawnTime: 2
 --- !u!1 &6683831839847737945
 GameObject:
   m_ObjectHideFlags: 0
