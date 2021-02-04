@@ -54,6 +54,9 @@ public class PlayerMovement : MonoBehaviour
     public AudioClip scream;
     public AudioClip shake;
     public AudioClip toy;
+    public AudioClip crouch;
+    public AudioClip uncrouch;
+
 
     private Light2D finalLight;
     private Light2D globalLight;
@@ -367,13 +370,16 @@ public class PlayerMovement : MonoBehaviour
 
     //hide 
     public void Hide() {
+        AS.PlayOneShot(crouch);
+
         SR.sortingOrder = 4;
         if (flashLight.activeSelf) { LightSwitch(); }
         isHidden = true;
     }
     public void Unhide() {
+        AS.PlayOneShot(uncrouch);
         SR.sortingOrder = 5;
-        isHidden = false;
+       isHidden = false;
         SR.enabled = true ;
     }
 
