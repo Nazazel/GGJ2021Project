@@ -31,8 +31,9 @@ public class Chase : MonoBehaviour
     private Coroutine co;
     private AudioSource AS;
     public AudioClip move;
-    public AudioClip sus;
-    public AudioClip alert;
+    public AudioClip[] sus;
+  
+    public AudioClip[] alert;
     public AudioClip stun;
 
 
@@ -82,7 +83,7 @@ public class Chase : MonoBehaviour
                 if (state != State.alerted)
                 {
                     state = State.alerted;
-                    AS.PlayOneShot(alert);
+                    AS.PlayOneShot(alert[Random.Range(0, sus.Length)]);
                     play.MusicController(state);
 
                 }
@@ -92,7 +93,7 @@ public class Chase : MonoBehaviour
                 if (state != State.suspicious)
                 {
                     state = State.suspicious;
-                    AS.PlayOneShot(sus);
+                    AS.PlayOneShot(sus[Random.Range(0,sus.Length)]);
                     play.MusicController(state);
 
                 }
@@ -115,7 +116,7 @@ public class Chase : MonoBehaviour
             {
                 
                 animator.SetBool("attacking", true);
-                AS.PlayOneShot(alert);
+                AS.PlayOneShot(alert[Random.Range(0, sus.Length)]);
 
                 SetWayPoint();
 
@@ -263,7 +264,7 @@ IEnumerator Stun()
     public void Alert() {
         if (state != State.suspicious)
         {
-            AS.PlayOneShot(sus);
+            AS.PlayOneShot(sus[Random.Range(0, sus.Length)]);
             state = State.suspicious;
             play.MusicController(state);
 
