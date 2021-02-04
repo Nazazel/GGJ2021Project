@@ -371,7 +371,7 @@ public class PlayerMovement : MonoBehaviour
     //hide 
     public void Hide() {
         AS.PlayOneShot(crouch);
-
+        gameObject.layer = 11;
         SR.sortingOrder = 4;
         if (flashLight.activeSelf) { LightSwitch(); }
         isHidden = true;
@@ -379,7 +379,8 @@ public class PlayerMovement : MonoBehaviour
     public void Unhide() {
         if (isHidden) { AS.PlayOneShot(uncrouch); }
         SR.sortingOrder = 5;
-       isHidden = false;
+        gameObject.layer = 0;
+        isHidden = false;
         SR.enabled = true ;
     }
 
