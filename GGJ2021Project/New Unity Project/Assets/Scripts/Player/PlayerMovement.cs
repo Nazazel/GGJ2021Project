@@ -36,6 +36,8 @@ public class PlayerMovement : MonoBehaviour
     private float battery=100 ;
     private float currentBattery;
     public float batteryCharge;
+    private float ogCharge;
+    public float chargeMultiplier;
     public float LightCost;
     public float LightMultiplier=2;
     private bool keyAlternate;
@@ -61,6 +63,7 @@ public class PlayerMovement : MonoBehaviour
     private int CurrentCollectables;
     void Awake()
     {
+        ogCharge = batteryCharge;
         AS = GetComponent<AudioSource>();
         CurrentCollectables = GameManager.count;
         controller = GetComponent<CharacterController2D>();
@@ -93,11 +96,19 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (charging) {
-
+        if (charging)
+        {
+            batteryCharge *= chargeMultiplier;
             time += .01f;
-            if (time >= waitCharge) { charging = false; }
-                }
+            if (time >= waitCharge)
+            {
+                charging = false;
+            }
+        }
+        else {
+
+            batteryCharge = ogCharge;
+        }
         if (!respawning)
         {
            // if (CurrentCollectables == collectableAmount) { Win(); }

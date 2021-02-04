@@ -308,6 +308,7 @@ MonoBehaviour:
   charging: 0
   waitCharge: 0.3
   batteryCharge: 1
+  chargeMultiplier: 1.007
   LightCost: 0.03
   LightMultiplier: 2
   ui: {fileID: 0}
