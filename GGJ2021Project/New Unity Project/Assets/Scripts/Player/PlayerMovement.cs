@@ -52,6 +52,8 @@ public class PlayerMovement : MonoBehaviour
     public AudioClip fonn;
     public AudioClip foff;
     public AudioClip scream;
+    public AudioClip shake;
+    public AudioClip toy;
 
     private Light2D finalLight;
     private Light2D globalLight;
@@ -98,10 +100,12 @@ public class PlayerMovement : MonoBehaviour
     {
         if (charging)
         {
+
             batteryCharge *= chargeMultiplier;
             time += .01f;
             if (time >= waitCharge)
             {
+                AS.Stop();
                 charging = false;
             }
         }
@@ -111,7 +115,6 @@ public class PlayerMovement : MonoBehaviour
         }
         if (!respawning)
         {
-           // if (CurrentCollectables == collectableAmount) { Win(); }
 
             flashLight.transform.position = lightSpot.transform.position;
             horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
@@ -237,7 +240,7 @@ public class PlayerMovement : MonoBehaviour
     public void ChargeBattery() {
         time = 0;
         charging = true;
-
+        AS.PlayOneShot(shake);
         if (currentBattery + batteryCharge > battery) { currentBattery = battery; }
         else {
             currentBattery += batteryCharge;
@@ -290,6 +293,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (other.tag == "pickup")
         {
+            AS.PlayOneShot(toy);
             CurrentCollectables += 1;
             GameManager.count++;
             other.GetComponent<Collectable>().Collect();
