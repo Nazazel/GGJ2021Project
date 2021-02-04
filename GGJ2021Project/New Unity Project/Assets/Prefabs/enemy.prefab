@@ -139,8 +139,22 @@ MonoBehaviour:
   AlertedDistance: 4
   LoseInterestRange: 0
   move: {fileID: 8300000, guid: 8aa6a882247f4e848a91d79477bec985, type: 3}
-  sus: {fileID: 8300000, guid: f51eec244c039c74d9810147068a0c87, type: 3}
-  alert: {fileID: 8300000, guid: a89613a2a62052046959bf925cc87a0f, type: 3}
+  sus:
+  - {fileID: 8300000, guid: 5c71ac3deec49b04bac3cf12e50cf70f, type: 3}
+  - {fileID: 8300000, guid: ab78e82eb225fab41acc8f3d61c0c339, type: 3}
+  - {fileID: 8300000, guid: edb0f7fd6d28b0e46baf480b35ddacf8, type: 3}
+  - {fileID: 8300000, guid: 0d602a1e1fbb6b24f802349549112cb4, type: 3}
+  - {fileID: 8300000, guid: 91157bfbf8c9f994f865e96a608f10e7, type: 3}
+  - {fileID: 8300000, guid: 4e5a57788ada5c4409e6774425925dac, type: 3}
+  - {fileID: 8300000, guid: f51eec244c039c74d9810147068a0c87, type: 3}
+  alert:
+  - {fileID: 8300000, guid: 98628b7b3d805e143a3833e13a22854a, type: 3}
+  - {fileID: 8300000, guid: a89613a2a62052046959bf925cc87a0f, type: 3}
+  - {fileID: 8300000, guid: 5a89e2f90b17c5f4d9fa5cd07c5b7495, type: 3}
+  - {fileID: 8300000, guid: 4741c127c46a6f6498caa49da8ff13a6, type: 3}
+  - {fileID: 8300000, guid: bb7f28cfd3ee59b4dae5ff0c9391ec56, type: 3}
+  - {fileID: 8300000, guid: 0a39f5da69b41ca44978e43889d4c0ea, type: 3}
+  - {fileID: 8300000, guid: 6aeeabe45e639704d9cc1d5e3d6d42a6, type: 3}
   stun: {fileID: 8300000, guid: 476af9008ec05094d97961d370d338c9, type: 3}
 --- !u!195 &2144251520944145270
 NavMeshAgent:

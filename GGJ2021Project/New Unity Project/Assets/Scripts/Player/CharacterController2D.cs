@@ -31,6 +31,8 @@ public class CharacterController2D : MonoBehaviour
     [HideInInspector] public CapsuleCollider2D m_CapsuleCollider2D;
     private AudioSource AS;
     public AudioClip jumps;
+    public AudioClip walk;
+
 
     public Transform GroundCheck { get => m_GroundCheck; set => m_GroundCheck = value; }
     public float jumpsRemaining { get => m_AirJumpsLeft; }
@@ -68,6 +70,8 @@ public class CharacterController2D : MonoBehaviour
 
         if (m_Grounded || m_AirControl)
         {
+            //if (m_Grounded&&move!=0&&AS.clip!=walk) { AS.clip=walk;AS.Play(); }
+          //  else { AS.Stop(); }
             Vector3 targetVelocity = new Vector2(move * 10f, m_RigidBody2D.velocity.y);
 
             m_RigidBody2D.velocity = Vector3.SmoothDamp(m_RigidBody2D.velocity, targetVelocity, ref m_Velocity, m_MovementSmoothing);
@@ -84,9 +88,10 @@ public class CharacterController2D : MonoBehaviour
 
         if (m_Grounded && jump)
         {
-            AS.pitch = Random.Range(0.9f, 1.1f);
-            AS.volume = 0.08f;
+           // AS.pitch = Random.Range(0.9f, 1.1f);
+           // AS.volume = 0.08f;
             AS.PlayOneShot(jumps);
+            
             m_Grounded = false;
             m_RigidBody2D.AddForce(new Vector2(m_RigidBody2D.velocity.x, m_JumpForce));
         }
@@ -114,9 +119,8 @@ public class CharacterController2D : MonoBehaviour
 
             m_RigidBody2D.velocity += Vector2.up * Physics2D.gravity.y * (m_FallGravity - 1) * Time.deltaTime;
             bool hitWall;
-            int dir = m_FacingRight ? 1 : -1;
 
-            hitWall = Physics2D.CapsuleCast(transform.position, new Vector2(m_CapsuleCollider2D.bounds.size.x, m_CapsuleCollider2D.bounds.size.y), CapsuleDirection2D.Vertical, 0, Vector2.right * dir, m_CapsuleCollider2D.bounds.size.x, m_GroundLayer);
+            hitWall = Physics2D.CapsuleCast(transform.position, new Vector2(m_CapsuleCollider2D.bounds.size.x, m_CapsuleCollider2D.bounds.size.y), CapsuleDirection2D.Vertical, 0, Vector2.down, m_CapsuleCollider2D.bounds.size.x, m_GroundLayer);
             if (hitWall)
                 m_AirControl = false;
             else m_AirControl = true;
@@ -124,13 +128,7 @@ public class CharacterController2D : MonoBehaviour
 
         else if (m_RigidBody2D.velocity.y > 0 && !Input.GetButton("Jump")) {//Tab Jump
                 m_RigidBody2D.velocity += Vector2.up * Physics2D.gravity.y * (m_FallGravity - 1) * Time.deltaTime;
-            bool hitWall;
-            int dir = m_FacingRight ? 1 : -1;
-
-            hitWall = Physics2D.CapsuleCast(transform.position, new Vector2(m_CapsuleCollider2D.bounds.size.x, m_CapsuleCollider2D.bounds.size.y), CapsuleDirection2D.Vertical, 0, Vector2.right * dir, m_CapsuleCollider2D.bounds.size.x, m_GroundLayer);
-                if (hitWall)
-                    m_AirControl = false;
-                else m_AirControl = true;
+     
             }
     }
 

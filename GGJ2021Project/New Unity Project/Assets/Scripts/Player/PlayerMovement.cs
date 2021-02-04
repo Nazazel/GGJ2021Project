@@ -36,6 +36,8 @@ public class PlayerMovement : MonoBehaviour
     private float battery=100 ;
     private float currentBattery;
     public float batteryCharge;
+    private float ogCharge;
+    public float chargeMultiplier;
     public float LightCost;
     public float LightMultiplier=2;
     private bool keyAlternate;
@@ -50,6 +52,11 @@ public class PlayerMovement : MonoBehaviour
     public AudioClip fonn;
     public AudioClip foff;
     public AudioClip scream;
+    public AudioClip shake;
+    public AudioClip toy;
+    public AudioClip crouch;
+    public AudioClip uncrouch;
+
 
     private Light2D finalLight;
     private Light2D globalLight;
@@ -61,6 +68,7 @@ public class PlayerMovement : MonoBehaviour
     private int CurrentCollectables;
     void Awake()
     {
+        ogCharge = batteryCharge;
         AS = GetComponent<AudioSource>();
         CurrentCollectables = GameManager.count;
         controller = GetComponent<CharacterController2D>();
@@ -93,14 +101,23 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (charging) {
+        if (charging)
+        {
 
+            batteryCharge *= chargeMultiplier;
             time += .01f;
-            if (time >= waitCharge) { charging = false; }
-                }
+            if (time >= waitCharge)
+            {
+                AS.Stop();
+                charging = false;
+            }
+        }
+        else {
+
+            batteryCharge = ogCharge;
+        }
         if (!respawning)
         {
-           // if (CurrentCollectables == collectableAmount) { Win(); }
 
             flashLight.transform.position = lightSpot.transform.position;
             horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
@@ -226,7 +243,7 @@ public class PlayerMovement : MonoBehaviour
     public void ChargeBattery() {
         time = 0;
         charging = true;
-
+        AS.PlayOneShot(shake);
         if (currentBattery + batteryCharge > battery) { currentBattery = battery; }
         else {
             currentBattery += batteryCharge;
@@ -279,6 +296,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (other.tag == "pickup")
         {
+            AS.PlayOneShot(toy);
             CurrentCollectables += 1;
             GameManager.count++;
             other.GetComponent<Collectable>().Collect();
@@ -352,14 +370,16 @@ public class PlayerMovement : MonoBehaviour
 
     //hide 
     public void Hide() {
-        SR.enabled = false;
-        gameObject.layer = 11;
+        AS.PlayOneShot(crouch);
+
+        SR.sortingOrder = 4;
         if (flashLight.activeSelf) { LightSwitch(); }
         isHidden = true;
     }
     public void Unhide() {
-        gameObject.layer = 0;
-        isHidden = false;
+        if (isHidden) { AS.PlayOneShot(uncrouch); }
+        SR.sortingOrder = 5;
+       isHidden = false;
         SR.enabled = true ;
     }
 
@@ -372,20 +392,17 @@ public class PlayerMovement : MonoBehaviour
         ui.Die();
         AS.PlayOneShot(scream);
         if (GameManager.maggot != null) { Destroy(GameManager.maggot); }
-
         if (flashLight.activeSelf) { LightSwitch(); }
         transform.position = respawnPoint.transform.position;
         rb2d.velocity = Vector2.zero;
         if (maggot != null)
         {
-            maggot.Calm();
+          //  maggot.Calm();
         }
         else if (GameManager.maggot != null)
         {
             maggot = GameManager.maggot.GetComponent<Chase>();
-            maggot.Calm();
-
-
+            //maggot.Calm();
         }
         StartCoroutine("respawn");
 
