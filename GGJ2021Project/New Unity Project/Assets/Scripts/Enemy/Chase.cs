@@ -17,6 +17,7 @@ public class Chase : MonoBehaviour
     private Animator animator;
     public float stunTime;
     public float TrapTime;
+    public float toFar = 10;
     private bool stop;
     public enum State { patrol, suspicious, alerted }
     public State state;
@@ -76,8 +77,7 @@ public class Chase : MonoBehaviour
         if (!trapped && !stunned)
         {
 
-
-            if (state == State.alerted && (Vector2.Distance(transform.position, player.transform.position)) < 1f) { state = State.patrol; }
+            if (state == State.alerted && (Vector2.Distance(transform.position, player.transform.position) >toFar)) { SetWayPointDistanceBased(); }
             else if ((Vector2.Distance(transform.position, player.transform.position)) < AlertedDistance && !stop && !play.isHidden && state!=State.alerted)
             {
                 if (state != State.alerted)
@@ -97,9 +97,6 @@ public class Chase : MonoBehaviour
                     play.MusicController(state);
 
                 }
-
-
-
 
             }
 
@@ -213,6 +210,27 @@ IEnumerator Stun()
                 GameObject x = wayPoints[Random.Range(0, wayPoints.Length)];
                 if (x != target) { target = x; break; }
             }
+            state = State.patrol;
+            play.MusicController(state);
+            AS.PlayOneShot(move);
+
+            agent.SetDestination(target.transform.position);
+        }
+
+    }
+    public void SetWayPointDistanceBased()
+    {
+        if (wayPoints.Length >= 1)
+        {
+
+            GameObject x = wayPoints[0];
+            float distance= Vector3.Distance(player.transform.position, x.transform.position);
+            foreach (GameObject waypoint in wayPoints) {
+                if (Vector3.Distance(player.transform.position, waypoint.transform.position) < distance) { x = waypoint; }
+            
+            }
+                
+            
             state = State.patrol;
             play.MusicController(state);
             AS.PlayOneShot(move);

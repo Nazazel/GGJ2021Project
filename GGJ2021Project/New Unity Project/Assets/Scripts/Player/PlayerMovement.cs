@@ -377,7 +377,7 @@ public class PlayerMovement : MonoBehaviour
         isHidden = true;
     }
     public void Unhide() {
-        AS.PlayOneShot(uncrouch);
+        if (isHidden) { AS.PlayOneShot(uncrouch); }
         SR.sortingOrder = 5;
        isHidden = false;
         SR.enabled = true ;
@@ -397,12 +397,12 @@ public class PlayerMovement : MonoBehaviour
         rb2d.velocity = Vector2.zero;
         if (maggot != null)
         {
-            maggot.Calm();
+          //  maggot.Calm();
         }
         else if (GameManager.maggot != null)
         {
             maggot = GameManager.maggot.GetComponent<Chase>();
-            maggot.Calm();
+            //maggot.Calm();
         }
         StartCoroutine("respawn");
 

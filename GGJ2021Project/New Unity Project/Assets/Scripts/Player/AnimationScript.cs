@@ -42,7 +42,7 @@ public class AnimationScript : MonoBehaviour
             {
                 anim.Play("Character_Jump");
             }
-            else if (controller.IsGrounded() && player.hidden)
+            else if (controller.IsGrounded() && player.isHidden)
             {
                 anim.Play("Character_Crouch");
             }
