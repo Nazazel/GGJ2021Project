@@ -367,13 +367,12 @@ public class PlayerMovement : MonoBehaviour
 
     //hide 
     public void Hide() {
-        SR.enabled = false;
-        gameObject.layer = 11;
+        SR.sortingOrder = 4;
         if (flashLight.activeSelf) { LightSwitch(); }
         isHidden = true;
     }
     public void Unhide() {
-        gameObject.layer = 0;
+        SR.sortingOrder = 5;
         isHidden = false;
         SR.enabled = true ;
     }
@@ -387,7 +386,6 @@ public class PlayerMovement : MonoBehaviour
         ui.Die();
         AS.PlayOneShot(scream);
         if (GameManager.maggot != null) { Destroy(GameManager.maggot); }
-
         if (flashLight.activeSelf) { LightSwitch(); }
         transform.position = respawnPoint.transform.position;
         rb2d.velocity = Vector2.zero;
@@ -399,8 +397,6 @@ public class PlayerMovement : MonoBehaviour
         {
             maggot = GameManager.maggot.GetComponent<Chase>();
             maggot.Calm();
-
-
         }
         StartCoroutine("respawn");
 
