@@ -85,7 +85,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2413057537271484408}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 81e7ec4d4da75494c83a393b3cb65cac, type: 3}
@@ -321,7 +321,11 @@ MonoBehaviour:
   fonn: {fileID: 8300000, guid: 78851d2ddbd71c54990800f1bd9e63d0, type: 3}
   foff: {fileID: 8300000, guid: ceb4120bca1965840a41cfbc5fca6b9d, type: 3}
   scream: {fileID: 8300000, guid: c3c9eb349cdacdd47ba4338d14a1e755, type: 3}
-  collectableAmount: 1
+  shake: {fileID: 8300000, guid: 1324bb95ba18ac34f98c96986a0dbd48, type: 3}
+  toy: {fileID: 8300000, guid: 836985eea1188dc419b7d21159514845, type: 3}
+  crouch: {fileID: 8300000, guid: d150e46b53c2c2f4196abd95b0e4ad0d, type: 3}
+  uncrouch: {fileID: 8300000, guid: 9696a745b44146042ba3d0108d585141, type: 3}
+  collectableAmount: 3
 --- !u!114 &2413057537492571054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -348,6 +352,7 @@ MonoBehaviour:
   m_RigidBody2D: {fileID: 0}
   m_CapsuleCollider2D: {fileID: 0}
   jumps: {fileID: 8300000, guid: 5ac93fb5cb90bce4ca161d50a560035a, type: 3}
+  walk: {fileID: 8300000, guid: 7731dfa7851d30a4798c0f8e92932212, type: 3}
 --- !u!70 &1475576400
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -395,9 +400,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf35863bb9558e447add9a9f33156ea5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 0}
-  player: {fileID: 0}
-  anim: {fileID: 0}
+  controller: {fileID: 2413057537492571054}
+  player: {fileID: 2413057537492570193}
+  anim: {fileID: 2408788281889421819}
   fall: 0
   walk: {fileID: 8300000, guid: 7731dfa7851d30a4798c0f8e92932212, type: 3}
 --- !u!82 &1505122987885385234
@@ -410,7 +415,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 81e7ec4d4da75494c83a393b3cb65cac, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -418,7 +423,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 256
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
