@@ -129,8 +129,9 @@ MonoBehaviour:
   stunned: 0
   trapped: 0
   m_FacingRight: 1
-  stunTime: 3
+  stunTime: 6
   TrapTime: 6
+  toFar: 10
   state: 0
   PatrolSpeed: 2.5
   suspiciousSpeed: 1.5
