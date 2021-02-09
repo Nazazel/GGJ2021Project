@@ -371,15 +371,16 @@ public class PlayerMovement : MonoBehaviour
     //hide 
     public void Hide() {
         AS.PlayOneShot(crouch);
-
+        gameObject.layer = 11;
         SR.sortingOrder = 4;
         if (flashLight.activeSelf) { LightSwitch(); }
         isHidden = true;
     }
     public void Unhide() {
         if (isHidden) { AS.PlayOneShot(uncrouch); }
-        SR.sortingOrder = 5;
-       isHidden = false;
+        SR.sortingOrder = 10;
+        gameObject.layer = 0;
+        isHidden = false;
         SR.enabled = true ;
     }
 
@@ -421,6 +422,8 @@ public class PlayerMovement : MonoBehaviour
         currentBattery = battery;
         SR.enabled = true;
         rb2d.velocity = Vector3.zero;
+        backgroundAudio.clip = patrol;
+        backgroundAudio.Play();
 
 
     }

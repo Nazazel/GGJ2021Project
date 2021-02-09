@@ -39,7 +39,7 @@ public class UIManager : MonoBehaviour
 
     IEnumerator fade() {
 
-
+        death.color = Color.black;
         yield return new WaitForSeconds(respawnTime);
         for (float i = 1; i >= 0; i -= Time.deltaTime)
         {
@@ -48,7 +48,6 @@ public class UIManager : MonoBehaviour
             yield return null;
         }
         death.enabled = false;
-        death.color= new Color(1, 1, 1, 1);
 
 
     }
