@@ -5,12 +5,17 @@ using UnityEngine;
 public class BackgroundPanner : MonoBehaviour
 {
     [SerializeField]
-    private float m_Frequency, m_Amplitude, m_MaxTimeSinceSwitch;
+    private float m_Frequency, m_Amplitude;
 
+    Vector3 InitialPos;
+    private void Awake()
+    {
+        InitialPos = transform.position;
+    }
 
     private void LateUpdate()
     {
-        transform.position += transform.right * m_Amplitude * Mathf.Sin(2 * Mathf.PI * m_Frequency * Time.time);
+        transform.position = InitialPos + transform.right * m_Amplitude * Mathf.Sin(2 * Mathf.PI * m_Frequency * Time.time);
 
 
     }

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4060673011479670226}
   - component: {fileID: 6596778930625863251}
   - component: {fileID: 405624261}
+  - component: {fileID: 1996617073}
   m_Layer: 0
   m_Name: EyeTrap
   m_TagString: hurtbox
@@ -73,7 +74,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 100
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: fc36109f9678ad74cb9193006587b9d8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -227,3 +228,21 @@ PolygonCollider2D:
       - {x: 0.07857143, y: 0.30714285}
       - {x: 0.07857143, y: 0.29285714}
       - {x: 0.10714286, y: 0.27142859}
+--- !u!114 &1996617073
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4037987012484888953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 721b14bc0813fbb4b8ba9d176e76afd8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ChangeAlpha: 0
+  ColorScalarOffset: {x: 1, y: 0.8, z: 0.9, w: 1}
+  ColorSpeed: 0.12
+  Amplitude: 0.12
+  ScaleSpeed: 0.12
+  ScaleAmp: 0.05

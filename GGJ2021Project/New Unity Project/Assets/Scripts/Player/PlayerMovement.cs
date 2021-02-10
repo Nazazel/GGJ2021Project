@@ -20,27 +20,15 @@ public class PlayerMovement : MonoBehaviour
     public GameObject flashLight;
     public Transform respawnPoint;
     public float respawnTime;
-
+    public float batteryChargeRate;
+    public float startingCharge;
     public bool hidden;
     public bool isHidden;
     public bool charging=false;
     public float waitCharge;
-    private float time = 0; 
-    private Rigidbody2D rb2d;
-    private bool respawning;
-    private Vector2 preJumpVelocity;
-    private float jumpDistance;
-    private float duration;
-    private Collider2D col;
-    private SpriteRenderer SR;
-    private float battery=100 ;
-    private float currentBattery;
-    public float batteryCharge;
-    private float ogCharge;
     public float chargeMultiplier;
     public float LightCost;
     public float LightMultiplier=2;
-    private bool keyAlternate;
     public UIManager ui;
     public Chase maggot;
     public GameObject lightSpot;
@@ -48,7 +36,6 @@ public class PlayerMovement : MonoBehaviour
     public AudioClip patrol;
     public AudioClip sus;
     public AudioClip alert;
-    private AudioSource AS;
     public AudioClip fonn;
     public AudioClip foff;
     public AudioClip scream;
@@ -57,6 +44,20 @@ public class PlayerMovement : MonoBehaviour
     public AudioClip crouch;
     public AudioClip uncrouch;
 
+
+    private float time = 0; 
+    private Rigidbody2D rb2d;
+    private bool respawning;
+    private Vector2 preJumpVelocity;
+    private float jumpDistance;
+    private float duration;
+    private Collider2D col;
+    private SpriteRenderer SR;
+    private float batteryMaxCharge= 100 ;
+    private float currentBattery;
+    private float ogCharge;
+    private bool keyAlternate;
+    private AudioSource AS;
 
     private Light2D finalLight;
     private Light2D globalLight;
@@ -68,7 +69,8 @@ public class PlayerMovement : MonoBehaviour
     private int CurrentCollectables;
     void Awake()
     {
-        ogCharge = batteryCharge;
+        ogCharge = batteryChargeRate;
+
         AS = GetComponent<AudioSource>();
         CurrentCollectables = GameManager.count;
         controller = GetComponent<CharacterController2D>();
@@ -79,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
         SR = GetComponent<SpriteRenderer>();
         controller.SetLight(flashLight);
         keyAlternate = false;
-        currentBattery = battery;
+        currentBattery = 0f;
         flashLight.SetActive(false);
         maggot = FindObjectOfType<Chase>();
 
@@ -104,7 +106,7 @@ public class PlayerMovement : MonoBehaviour
         if (charging)
         {
 
-            batteryCharge *= chargeMultiplier;
+            batteryChargeRate *= chargeMultiplier;
             time += .01f;
             if (time >= waitCharge)
             {
@@ -114,7 +116,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else {
 
-            batteryCharge = ogCharge;
+            batteryChargeRate = ogCharge;
         }
         if (!respawning)
         {
@@ -147,13 +149,13 @@ public class PlayerMovement : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.Q) && keyAlternate == false && !flashLight.activeSelf)
                 {
                     keyAlternate = true;
-                    ChargeBattery();
+                    ChargebatteryMaxCharge();
 
                 }
                 else if (Input.GetKeyDown(KeyCode.E) && keyAlternate == true && !flashLight.activeSelf)
                 {
                     keyAlternate = false;
-                    ChargeBattery();
+                    ChargebatteryMaxCharge();
 
                 }
             }
@@ -240,13 +242,13 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    public void ChargeBattery() {
+    public void ChargebatteryMaxCharge() {
         time = 0;
         charging = true;
         AS.PlayOneShot(shake);
-        if (currentBattery + batteryCharge > battery) { currentBattery = battery; }
+        if (currentBattery + batteryChargeRate > batteryMaxCharge) { currentBattery = batteryMaxCharge; }
         else {
-            currentBattery += batteryCharge;
+            currentBattery += batteryChargeRate;
         }
         Trigger();
     
@@ -358,7 +360,7 @@ public class PlayerMovement : MonoBehaviour
             AS.PlayOneShot(foff);
         }
         else {
-            if (battery > 0)
+            if (batteryMaxCharge > 0)
             {
                 AS.PlayOneShot(fonn);
                 flashLight.SetActive(true);
@@ -419,7 +421,7 @@ public class PlayerMovement : MonoBehaviour
 
         yield return new WaitForSeconds(respawnTime);
         respawning = false;
-        currentBattery = battery;
+        currentBattery = batteryMaxCharge;
         SR.enabled = true;
         rb2d.velocity = Vector3.zero;
         backgroundAudio.clip = patrol;

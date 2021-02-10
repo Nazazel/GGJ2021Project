@@ -129,15 +129,15 @@ MonoBehaviour:
   stunned: 0
   trapped: 0
   m_FacingRight: 1
-  stunTime: 6
-  TrapTime: 6
+  stunTime: 8
+  TrapTime: 8
   toFar: 10
   state: 0
-  PatrolSpeed: 2.5
-  suspiciousSpeed: 1.5
-  SuspiciousDistance: 10
-  AlertedSpeed: 5
-  AlertedDistance: 4
+  PatrolSpeed: 3.5
+  suspiciousSpeed: 2
+  SuspiciousDistance: 12
+  AlertedSpeed: 6
+  AlertedDistance: 5
   LoseInterestRange: 0
   move: {fileID: 8300000, guid: 8aa6a882247f4e848a91d79477bec985, type: 3}
   sus:
@@ -236,7 +236,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.301
+  m_Volume: 0.4
   m_Pitch: 1
   Loop: 0
   Mute: 0

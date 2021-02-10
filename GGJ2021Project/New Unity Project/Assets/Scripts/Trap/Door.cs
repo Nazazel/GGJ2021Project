@@ -5,7 +5,7 @@ using UnityEngine;
 public class Door : MonoBehaviour
 {
     // Start is called before the first frame update
-    public float totalBattery;
+    public float totalbatteryMaxCharge;
     [SerializeField]
     private float currentBattery;
     public float IncrementAmount;
@@ -54,7 +54,7 @@ public class Door : MonoBehaviour
         if (active &&!open)
         {
             currentBattery += IncrementAmount;
-            if (currentBattery >= totalBattery)
+            if (currentBattery >= totalbatteryMaxCharge)
             {
                 open = true;
                 GetComponent<Collider2D>().isTrigger = true;

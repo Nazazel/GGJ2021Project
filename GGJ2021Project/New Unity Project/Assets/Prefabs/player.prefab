@@ -85,7 +85,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2413057537271484408}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 81e7ec4d4da75494c83a393b3cb65cac, type: 3}
@@ -303,13 +303,14 @@ MonoBehaviour:
   flashLight: {fileID: 0}
   respawnPoint: {fileID: 0}
   respawnTime: 2
+  batteryChargeRate: 0.6
+  startingCharge: 0
   hidden: 0
   isHidden: 0
   charging: 0
-  waitCharge: 0.3
-  batteryCharge: 1
-  chargeMultiplier: 1.007
-  LightCost: 0.03
+  waitCharge: 0.4
+  chargeMultiplier: 1.0025
+  LightCost: 0.04
   LightMultiplier: 2
   ui: {fileID: 0}
   maggot: {fileID: 0}
@@ -338,7 +339,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fa236488f2e73e4d816cff210429fdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_JumpForce: 500
+  m_JumpForce: 550
   m_AirJumps: 0
   m_FallGravity: 1
   m_MovementSmoothing: 0.05
@@ -366,8 +367,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.036605418, y: -0.09881812}
-  m_Size: {x: 0.6066977, y: 1.7122303}
+  m_Offset: {x: 0, y: -0.1}
+  m_Size: {x: 0.6066977, y: 1.7}
   m_Direction: 0
 --- !u!95 &2408788281889421819
 Animator:
