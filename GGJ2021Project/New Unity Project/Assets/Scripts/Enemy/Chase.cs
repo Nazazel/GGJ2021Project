@@ -37,6 +37,12 @@ public class Chase : MonoBehaviour
     public AudioClip[] alert;
     public AudioClip stun;
 
+    //charge
+    public float totalbatteryMaxCharge;
+    private float currentBattery;
+    public float IncrementAmount;
+    public bool open = false;
+    public bool active = false;
 
 
 
@@ -70,6 +76,16 @@ public class Chase : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (active && !open)
+        {
+            currentBattery += IncrementAmount;
+            if (currentBattery >= totalbatteryMaxCharge)
+            {
+                open = true;
+            }
+        }
+        if (open) { Trip(); }
 
         Move(agent.velocity.x);
 
@@ -179,6 +195,8 @@ IEnumerator Stun()
         c2d.isTrigger = true;
         stunned = true;
         yield return new WaitForSeconds(stunTime);
+        open = false;
+        currentBattery = 0;
         stunned = false;
         c2d.isTrigger = false;
         rb.isKinematic = false;
@@ -195,6 +213,8 @@ IEnumerator Stun()
         agent.isStopped = true;
         trapped = true;
         yield return new WaitForSeconds(TrapTime);
+        open = false;
+        currentBattery = 0;
         trapped = false;
         rb.isKinematic = false;
         agent.isStopped=false;
@@ -240,7 +260,29 @@ IEnumerator Stun()
 
     }
 
-    public void Lit() {
+    public void Redo()
+    {
+        if (!open)
+        {
+            active = false;
+            currentBattery = 0;
+        }
+    }
+
+    public void Lit()
+    {
+        if (!open)
+        {
+            active = true;
+
+
+        }
+
+    }
+
+    
+
+    public void Trip() {
         if (co == null)
         {
             animator.SetBool("stunned", true);
@@ -255,6 +297,8 @@ IEnumerator Stun()
 
         }
     }
+
+
 
     public void Trapped() {
 
