@@ -158,12 +158,15 @@ public class CharacterController2D : MonoBehaviour
         {
             bool hitWall;
             int dir = m_FacingRight ? 1 : -1 ;
-            hitWall = Physics2D.CapsuleCast(transform.position, new Vector2(m_CapsuleCollider2D.bounds.size.x, m_CapsuleCollider2D.bounds.size.y), CapsuleDirection2D.Vertical, 0, Vector2.right * dir, m_CapsuleCollider2D.bounds.size.x, m_GroundLayer) ;
+            hitWall = Physics2D.CapsuleCast(transform.position, new Vector2(m_CapsuleCollider2D.bounds.size.x, m_CapsuleCollider2D.bounds.size.y), CapsuleDirection2D.Horizontal, 0, Vector2.right * dir, m_CapsuleCollider2D.bounds.size.x, m_GroundLayer) ;
             if (hitWall)
+            {
                 m_AirControl = false;
+
+            }
             else m_AirControl = true;
 
-         //   print("Hit Wall: " + hitWall);
+          // print("Hit Wall: " + m_AirControl);
           //  print("Grounded: " + m_Grounded);
         }
     }
