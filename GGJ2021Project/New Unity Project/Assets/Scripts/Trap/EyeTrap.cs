@@ -77,7 +77,7 @@ public class EyeTrap : MonoBehaviour
 
     IEnumerator cool()
     {
-       
+        active = false;
         yield return new WaitForSeconds(cooldown);
         activated = false;
         enemy = false;
