@@ -16,10 +16,17 @@ public class EyeTrap : MonoBehaviour
     public float IncrementAmount;
     public bool open = false;
     public bool active = false;
+    public float blinkTimer;
+    private bool blink;
     private void Awake()
     {
         activated = false;
         anim = GetComponent<Animator>();
+    }
+
+    private void Start()
+    {
+        blink = true;
     }
 
 
@@ -64,6 +71,23 @@ public class EyeTrap : MonoBehaviour
             }
         }
         if (open) { Trip(); }
+        if (blink) {
+            blink = false;
+            StartCoroutine(Blink());
+
+
+        }
+
+    }
+
+    private IEnumerator Blink() {
+        yield return new WaitForSeconds(blinkTimer);
+        if (!active && !activated)
+        { anim.SetBool("blink", true);
+            yield return new WaitForSeconds(.5f);
+            anim.SetBool("blink", false);
+        }
+        blink = true;
     }
 
     void OnTriggerEnter2D(Collider2D other) {
