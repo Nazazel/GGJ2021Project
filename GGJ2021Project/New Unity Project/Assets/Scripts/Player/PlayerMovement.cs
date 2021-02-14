@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -65,11 +65,15 @@ public class PlayerMovement : MonoBehaviour
     private float t = 0;
     private float initialLightIntensity;
 
+    private Animator anim;
+
+
     public int collectableAmount=3;
     private int CurrentCollectables;
     void Awake()
     {
         ogCharge = batteryChargeRate;
+        anim = GetComponent<Animator>();
 
         AS = GetComponent<AudioSource>();
         CurrentCollectables = GameManager.count;
@@ -125,6 +129,8 @@ public class PlayerMovement : MonoBehaviour
             horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
             if (Input.GetButtonDown("Jump")||Input.GetKeyDown(KeyCode.UpArrow) )
             {
+                anim.Play("Character_Jump");
+
                 jump = true;
                 jumpDistance = transform.position.y;
                 preJumpVelocity = rb2d.velocity;

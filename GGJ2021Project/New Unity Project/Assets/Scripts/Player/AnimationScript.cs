@@ -33,14 +33,14 @@ public class AnimationScript : MonoBehaviour
     {
         if (!fall &&!player.charging)
         {
-            if (Input.GetAxisRaw("Horizontal") != 0 && controller.IsGrounded())
-            {
-                anim.Play("Character_Walk");
-                // AS.PlayOneShot(walk);
-            }
-            else if (Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.UpArrow))
+           
+            if (Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.UpArrow))
             {
                 anim.Play("Character_Jump");
+            }
+            else if (Input.GetAxisRaw("Horizontal") != 0 && controller.IsGrounded())
+            {
+                anim.Play("Character_Walk");
             }
             else if (controller.IsGrounded() && player.isHidden)
             {
