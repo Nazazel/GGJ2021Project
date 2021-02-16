@@ -12,11 +12,14 @@ public class AnimationScript : MonoBehaviour
     public bool fall;
     private AudioSource AS;
     public AudioClip walk;
+    private SpriteRenderer sr;
+    public Sprite fallSprite;
 
 
     // Start is called before the first frame update
     void Awake()
     {
+        sr= GetComponent<SpriteRenderer>();
         AS = GetComponent<AudioSource>();
 
         controller = GetComponent<CharacterController2D>();
@@ -52,11 +55,7 @@ public class AnimationScript : MonoBehaviour
             }
         }
         else {
-
-            if ( fall & anim.GetCurrentAnimatorStateInfo(0).IsName("Character_Idle"))
-            {
-                fall = false;
-            }
+            
             if (player.charging) {
                 anim.Play("Character_Shake_Light");
 
@@ -68,6 +67,7 @@ public class AnimationScript : MonoBehaviour
    
     private void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log(other.tag);
         if (other.tag == "fall")
         {
             fall = true;
