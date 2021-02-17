@@ -17,18 +17,18 @@ MonoBehaviour:
     m_To: '**ANY CAMERA**'
     m_Blend:
       m_Style: 1
-      m_Time: 10
+      m_Time: 15
       m_CustomCurve:
         serializedVersion: 2
         m_Curve: []
         m_PreInfinity: 0
         m_PostInfinity: 0
         m_RotationOrder: 0
-  - m_From: '**ANY CAMERA**'
-    m_To: vcam3
+  - m_From: 
+    m_To: 
     m_Blend:
       m_Style: 1
-      m_Time: 20
+      m_Time: 10
       m_CustomCurve:
         serializedVersion: 2
         m_Curve: []
