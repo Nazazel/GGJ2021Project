@@ -56,7 +56,7 @@ public class EyeTrap : MonoBehaviour
         anim.SetBool("on",true);
         activated = true;
         if (enemy &&maggot!=null) { maggot.Trapped(); }
-        
+        open = false;
         StartCoroutine(cool());
     }
 

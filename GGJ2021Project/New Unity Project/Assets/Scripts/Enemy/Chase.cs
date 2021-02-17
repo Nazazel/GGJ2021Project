@@ -194,7 +194,9 @@ IEnumerator Stun()
         rb.isKinematic = true;
         c2d.isTrigger = true;
         stunned = true;
+
         yield return new WaitForSeconds(stunTime);
+
         open = false;
         currentBattery = 0;
         stunned = false;
@@ -213,6 +215,7 @@ IEnumerator Stun()
         agent.isStopped = true;
         trapped = true;
         yield return new WaitForSeconds(TrapTime);
+
         open = false;
         currentBattery = 0;
         trapped = false;
@@ -283,6 +286,7 @@ IEnumerator Stun()
     
 
     public void Trip() {
+        open = false;
         if (co == null)
         {
             animator.SetBool("stunned", true);
@@ -301,6 +305,7 @@ IEnumerator Stun()
 
 
     public void Trapped() {
+        open = false;
 
         if (co == null)
         {
