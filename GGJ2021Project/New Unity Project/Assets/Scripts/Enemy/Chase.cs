@@ -146,7 +146,8 @@ public class Chase : MonoBehaviour
                 agent.speed = AlertedSpeed;
                 target = player;
                 gameObject.layer = 0;
-                play.isHidden = false;
+                play.hidden = false;
+                play.Unhide();
              //   if (Vector2.Distance(transform.position, target.transform.position) > LoseInterestRange) { state = State.patrol; }
                 break;
             case State.suspicious:

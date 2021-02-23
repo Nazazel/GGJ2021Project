@@ -85,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
         SR = GetComponent<SpriteRenderer>();
         controller.SetLight(flashLight);
         keyAlternate = false;
-        currentBattery = 0f;
+        currentBattery = 100f;
         flashLight.SetActive(false);
         maggot = FindObjectOfType<Chase>();
 
@@ -150,6 +150,7 @@ public class PlayerMovement : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.DownArrow )|| Input.GetKeyDown(KeyCode.S)) { Hide(); }
                 else if (Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.S)) { Unhide(); }
             }
+            if (!hidden &&isHidden) { Unhide(); }
             if (Input.GetAxisRaw("Horizontal") == 0 && controller.IsGrounded())
             {
                 if (Input.GetKeyDown(KeyCode.Q) && keyAlternate == false && !flashLight.activeSelf)
