@@ -53,8 +53,8 @@ public class PlayerMovement : MonoBehaviour
     private float duration;
     private Collider2D col;
     private SpriteRenderer SR;
-    private float batteryMaxCharge= 100 ;
-    private float currentBattery;
+    public float batteryMaxCharge= 100 ;
+    public float currentBattery;
     private float ogCharge;
     private bool keyAlternate;
     private AudioSource AS;
@@ -64,6 +64,7 @@ public class PlayerMovement : MonoBehaviour
     private bool finalTransition = false;
     private float t = 0;
     private float initialLightIntensity;
+    public bool fall;
 
     private Animator anim;
 
@@ -72,6 +73,7 @@ public class PlayerMovement : MonoBehaviour
     private int CurrentCollectables;
     void Awake()
     {
+        fall = false;
         ogCharge = batteryChargeRate;
         anim = GetComponent<Animator>();
 
@@ -107,50 +109,98 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (charging)
+        if (!fall)
         {
-
-            batteryChargeRate *= chargeMultiplier;
-            time += .01f;
-            if (time >= waitCharge)
+            if (charging)
             {
-                AS.Stop();
-                charging = false;
+                if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Character_Shake_Light"))
+                    anim.Play("Character_Shake_Light");
+
+                batteryChargeRate *= chargeMultiplier;
+                time += .01f;
+                if (time >= waitCharge || (Input.GetAxisRaw("Horizontal") != 0 || Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) || Input.GetKeyDown(KeyCode.LeftShift))
+                {
+                    AS.Stop();
+
+                    charging = false;
+                }
+
             }
-        }
-        else {
-
-            batteryChargeRate = ogCharge;
-        }
-        if (!respawning)
-        {
-
-            flashLight.transform.position = lightSpot.transform.position;
-            horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
-            if (Input.GetButtonDown("Jump")||Input.GetKeyDown(KeyCode.UpArrow) )
+            else
             {
-                anim.Play("Character_Jump");
 
-                jump = true;
-                jumpDistance = transform.position.y;
-                preJumpVelocity = rb2d.velocity;
-            }
-            if (Input.GetKeyDown(KeyCode.LeftShift))
-            {
-                LightSwitch();
-            }
+                batteryChargeRate = ogCharge;
+                if (!respawning)
+                {
 
-            if (controller.IsGrounded())
-            {
-                jumpDistance = transform.position.y;
-            }
+                    flashLight.transform.position = lightSpot.transform.position;
+                    horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
+                    if (horizontalMove == 0 && (controller.IsGrounded()) && !isHidden)
+                    {
+                        anim.Play("Character_Idle");
+                    }
+                    if (isHidden && controller.IsGrounded()) { anim.Play("Character_Crouch"); }
+                    if (Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.UpArrow))
+                    {
+                        jump = true;
+                        jumpDistance = transform.position.y;
+                        preJumpVelocity = rb2d.velocity;
+                    }
+                    if (horizontalMove != 0 && (controller.IsGrounded())) { anim.Play("Character_Walk"); }
+                    if (!controller.IsGrounded())
+                    {
+                        anim.Play("Character_Jump");
+                    }
 
-            if (hidden)
-            {
-                if (Input.GetKeyDown(KeyCode.DownArrow )|| Input.GetKeyDown(KeyCode.S)) { Hide(); }
-                else if (Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.S)) { Unhide(); }
+                    if (Input.GetKeyDown(KeyCode.LeftShift))
+                    {
+                        LightSwitch();
+                    }
+
+                    if (controller.IsGrounded())
+                    {
+                        jumpDistance = transform.position.y;
+                    }
+
+                    if (hidden)
+                    {
+                        if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) { Hide(); }
+                        else if (Input.GetKeyUp(KeyCode.DownArrow) || Input.GetKeyUp(KeyCode.S)) { Unhide(); }
+                    }
+                    if (!hidden && isHidden) { Unhide(); }
+
+
+                    if (currentBattery <= 0 && flashLight.activeSelf) { LightSwitch(); }
+                    if (currentBattery >= 0)
+                    {
+                        if (currentBattery - LightCost >= 0 && !flashLight.activeSelf)
+                            currentBattery -= LightCost;
+                        else if (currentBattery - (LightCost * LightMultiplier) >= 0 && flashLight.activeSelf)
+                            currentBattery -= (LightCost * LightMultiplier);
+                        else
+                            currentBattery = 0;
+
+                    }
+                    if (flashLight.activeSelf)
+                    {
+
+                        if (currentBattery > 10)
+                            flashLight.GetComponent<Light2D>().intensity = (currentBattery / 100);
+                        else
+                            flashLight.GetComponent<Light2D>().intensity = .1f;
+
+                    }
+
+                }
+                else
+                {
+                    rb2d.velocity = Vector2.zero;
+
+
+                }
             }
-            if (!hidden &&isHidden) { Unhide(); }
+            ui.setAmount(currentBattery);
+
             if (Input.GetAxisRaw("Horizontal") == 0 && controller.IsGrounded())
             {
                 if (Input.GetKeyDown(KeyCode.Q) && keyAlternate == false && !flashLight.activeSelf)
@@ -166,45 +216,22 @@ public class PlayerMovement : MonoBehaviour
 
                 }
             }
-
-            if (currentBattery <= 0 && flashLight.activeSelf) { LightSwitch(); }
-            if (currentBattery >= 0)
+            if (finalTransition)
             {
-                if (currentBattery - LightCost >= 0 &&!flashLight.activeSelf)
-                    currentBattery -= LightCost;
-                else if (currentBattery - (LightCost*LightMultiplier) >= 0 && flashLight.activeSelf)
-                    currentBattery -= (LightCost * LightMultiplier);
-                else
-                    currentBattery = 0;
-
+                t += Time.deltaTime * 0.2f;
+                finalLight.intensity = Mathf.Lerp(initialLightIntensity, 0, t);
+                globalLight.intensity = Mathf.Lerp(0.1f, 0, t);
+                if (t >= 1)
+                {
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                }
             }
-            if (flashLight.activeSelf)
-            {
-
-                if (currentBattery > 10)
-                    flashLight.GetComponent<Light2D>().intensity = (currentBattery / 100);
-                else
-                    flashLight.GetComponent<Light2D>().intensity = .1f;
-
-            }
-
-            ui.setAmount(currentBattery);
         }
-        else
-        {
-            rb2d.velocity = Vector2.zero;
+        else {
 
-
-        }
-
-        if (finalTransition)
-        {
-            t += Time.deltaTime * 0.2f;
-            finalLight.intensity = Mathf.Lerp(initialLightIntensity, 0, t);
-            globalLight.intensity = Mathf.Lerp(0.1f, 0, t);
-            if (t >= 1 )
+            if (fall & anim.GetCurrentAnimatorStateInfo(0).IsName("Character_Idle"))
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                fall = false;
             }
         }
     }
@@ -329,7 +356,14 @@ public class PlayerMovement : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             }
         }
-        
+        if (other.tag == "fall")
+        {
+            fall = true;
+            anim.Play("Character_Falling");
+
+
+        }
+
 
 
     }

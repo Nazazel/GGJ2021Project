@@ -27,10 +27,12 @@ public class AnimationScript : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "Level2") { fall = true; }
     }
+            /*
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(anim.GetCurrentAnimatorStateInfo(0).ToString());
         if (!fall &&!player.charging)
         {
            
@@ -76,4 +78,5 @@ public class AnimationScript : MonoBehaviour
 
         }
     }
+    */
 }
