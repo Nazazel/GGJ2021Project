@@ -93,8 +93,8 @@ public class Chase : MonoBehaviour
         if (!trapped && !stunned)
         {
 
-            if (state == State.alerted && (Vector2.Distance(transform.position, player.transform.position) >toFar)) { SetWayPointDistanceBased(); }
-            else if ((Vector2.Distance(transform.position, player.transform.position)) < AlertedDistance && !stop && !play.isHidden && state!=State.alerted)
+            if (state == State.alerted && (Vector2.Distance(transform.position, player.transform.position) > toFar)) { SetWayPointDistanceBased(); }
+            else if ((Vector2.Distance(transform.position, player.transform.position)) < AlertedDistance && !stop && !play.isHidden && state != State.alerted)
             {
                 if (state != State.alerted)
                 {
@@ -109,7 +109,7 @@ public class Chase : MonoBehaviour
                 if (state != State.suspicious)
                 {
                     state = State.suspicious;
-                    AS.PlayOneShot(sus[Random.Range(0,sus.Length)]);
+                    AS.PlayOneShot(sus[Random.Range(0, sus.Length)]);
                     play.MusicController(state);
 
                 }
@@ -118,16 +118,16 @@ public class Chase : MonoBehaviour
 
             else if ((Vector2.Distance(transform.position, target.transform.position)) < 1f && !stop && (target != player) && state != State.alerted)
             {
-              
-                    state = State.patrol;
+
+                state = State.patrol;
 
                 SetWayPoint();
-               
+
 
             }
             else if ((Vector2.Distance(transform.position, player.transform.position)) < 1f && !stop && (target == player) && state != State.alerted)
             {
-                
+
                 animator.SetBool("attacking", true);
                 AS.PlayOneShot(alert[Random.Range(0, sus.Length)]);
 
@@ -136,19 +136,19 @@ public class Chase : MonoBehaviour
 
 
             }
+
         }
-
-
+        if (!stunned &&!trapped) { 
         switch (state) {
 
             case State.alerted:
-                animator.SetBool("alerted",true);
+                animator.SetBool("alerted", true);
                 agent.speed = AlertedSpeed;
                 target = player;
                 gameObject.layer = 0;
                 play.hidden = false;
                 play.Unhide();
-             //   if (Vector2.Distance(transform.position, target.transform.position) > LoseInterestRange) { state = State.patrol; }
+                //   if (Vector2.Distance(transform.position, target.transform.position) > LoseInterestRange) { state = State.patrol; }
                 break;
             case State.suspicious:
                 animator.SetBool("alerted", false);
@@ -167,6 +167,8 @@ public class Chase : MonoBehaviour
 
 
         }
+    }
+    
         if (GameManager.won)
         {
             agent.isStopped = true;
@@ -205,6 +207,7 @@ IEnumerator Stun()
         rb.isKinematic = false;
         agent.isStopped = false;
         animator.SetBool("stunned", false);
+
         SetWayPoint();
 
     }
@@ -223,6 +226,7 @@ IEnumerator Stun()
         rb.isKinematic = false;
         agent.isStopped=false;
         animator.SetBool("stunned", false);
+
         SetWayPoint();
     }
 
@@ -287,15 +291,15 @@ IEnumerator Stun()
     
 
     public void Trip() {
+        animator.SetBool("alerted", false);
+        animator.SetBool("stunned", true);
         open = false;
         if (co == null)
         {
-            animator.SetBool("stunned", true);
 
             co = StartCoroutine(Stun());
         }
         else if (!trapped) {
-            animator.SetBool("stunned", true);
 
             StopCoroutine(co);
             co = StartCoroutine(Stun());
@@ -307,15 +311,14 @@ IEnumerator Stun()
 
     public void Trapped() {
         open = false;
+        animator.SetBool("stunned", true);
 
         if (co == null)
         {
-            animator.SetBool("stunned", true);
 
             co = StartCoroutine(TrapStun());
         }
         else if(!trapped){
-            animator.SetBool("stunned", true);
             StopCoroutine(co);
             co = StartCoroutine(TrapStun());
         }
@@ -330,7 +333,7 @@ IEnumerator Stun()
     }
 
     public void Alert() {
-        if (state != State.suspicious)
+        if (state != State.suspicious && !trapped&!stunned)
         {
             AS.PlayOneShot(sus[Random.Range(0, sus.Length)]);
             state = State.suspicious;
