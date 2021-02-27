@@ -139,7 +139,7 @@ public class PlayerMovement : MonoBehaviour
                     {
                         anim.Play("Character_Idle");
                     }
-                    if (isHidden && controller.IsGrounded()) { anim.Play("Character_Crouch"); }
+                    if (isHidden && controller.IsGrounded() && horizontalMove == 0) { anim.Play("Character_Crouch"); }
                     if (Input.GetButtonDown("Jump") || Input.GetKeyDown(KeyCode.UpArrow))
                     {
                         jump = true;
