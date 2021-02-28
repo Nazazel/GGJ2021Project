@@ -19,7 +19,7 @@ public class Chase : MonoBehaviour
     public float TrapTime;
     public float toFar = 10;
     private bool stop;
-    public enum State { patrol, suspicious, alerted }
+    public enum State { patrol, suspicious, alerted, off }
     public State state;
     public float PatrolSpeed;
     public float suspiciousSpeed;
@@ -194,6 +194,8 @@ public class Chase : MonoBehaviour
 
 IEnumerator Stun()
     {
+        AS.clip = stun;
+        AS.Play();
         rb.velocity = Vector2.zero;
         agent.isStopped = true;
         rb.isKinematic = true;
@@ -216,6 +218,8 @@ IEnumerator Stun()
 
     IEnumerator TrapStun()
     {
+        AS.clip = stun;
+        AS.Play();
         rb.velocity = Vector2.zero;
         rb.isKinematic = true;
         agent.isStopped = true;
@@ -296,6 +300,7 @@ IEnumerator Stun()
     public void Trip() {
         animator.SetBool("alerted", false);
         animator.SetBool("stunned", true);
+        state = State.off;
         open = false;
         if (co == null)
         {
@@ -315,6 +320,7 @@ IEnumerator Stun()
     public void Trapped() {
         open = false;
         animator.SetBool("stunned", true);
+        state = State.off;
 
         if (co == null)
         {
