@@ -99,7 +99,8 @@ public class Chase : MonoBehaviour
                 if (state != State.alerted)
                 {
                     state = State.alerted;
-                    AS.PlayOneShot(alert[Random.Range(0, sus.Length)]);
+                    AS.clip = alert[Random.Range(0, sus.Length)];
+                    AS.Play();
                     play.MusicController(state);
 
                 }
@@ -109,7 +110,8 @@ public class Chase : MonoBehaviour
                 if (state != State.suspicious)
                 {
                     state = State.suspicious;
-                    AS.PlayOneShot(sus[Random.Range(0, sus.Length)]);
+                    AS.clip = sus[Random.Range(0, sus.Length)];
+                    AS.Play();
                     play.MusicController(state);
 
                 }
@@ -129,8 +131,8 @@ public class Chase : MonoBehaviour
             {
 
                 animator.SetBool("attacking", true);
-                AS.PlayOneShot(alert[Random.Range(0, sus.Length)]);
-
+                AS.clip = alert[Random.Range(0, sus.Length)];
+                AS.Play();
                 SetWayPoint();
 
 
@@ -240,7 +242,8 @@ IEnumerator Stun()
             }
             state = State.patrol;
             play.MusicController(state);
-            AS.PlayOneShot(move);
+            AS.clip = move;
+            AS.Play();
 
             agent.SetDestination(target.transform.position);
         }
@@ -261,8 +264,8 @@ IEnumerator Stun()
             
             state = State.patrol;
             play.MusicController(state);
-            AS.PlayOneShot(move);
-
+            AS.clip = move;
+            AS.Play();
             agent.SetDestination(target.transform.position);
         }
 
@@ -335,7 +338,8 @@ IEnumerator Stun()
     public void Alert() {
         if (state != State.suspicious && !trapped&!stunned)
         {
-            AS.PlayOneShot(sus[Random.Range(0, sus.Length)]);
+            AS.clip = sus[Random.Range(0, sus.Length)];
+            AS.Play();
             state = State.suspicious;
             play.MusicController(state);
 
