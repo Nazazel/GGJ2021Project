@@ -45,7 +45,7 @@ public class FlashLight : MonoBehaviour
         if (other.gameObject.GetComponent<Chase>())
         {
 
-            other.gameObject.GetComponent<Chase>().Redo();
+          //  other.gameObject.GetComponent<Chase>().Redo();
         }
 
     }

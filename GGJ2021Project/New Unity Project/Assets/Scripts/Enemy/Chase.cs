@@ -85,7 +85,11 @@ public class Chase : MonoBehaviour
                 open = true;
             }
         }
-        if (open) { Trip(); }
+        if (open) {
+            open = false;
+            Redo();
+            Trip(); 
+        }
 
         Move(agent.velocity.x);
 
@@ -166,6 +170,9 @@ public class Chase : MonoBehaviour
                 if (target == player) { SetWayPoint(); }
                 gameObject.layer = 12;
                 break;
+                case State.off:
+                    if (play.inHideObject) { play.hidden = true; }
+                    break;
 
 
         }
@@ -218,8 +225,7 @@ IEnumerator Stun()
 
     IEnumerator TrapStun()
     {
-        AS.clip = stun;
-        AS.Play();
+      
         rb.velocity = Vector2.zero;
         rb.isKinematic = true;
         agent.isStopped = true;
@@ -298,9 +304,12 @@ IEnumerator Stun()
     
 
     public void Trip() {
+ 
         animator.SetBool("alerted", false);
         animator.SetBool("stunned", true);
+       
         state = State.off;
+        if (play.inHideObject) { play.hidden = true; }
         open = false;
         if (co == null)
         {
@@ -319,8 +328,12 @@ IEnumerator Stun()
 
     public void Trapped() {
         open = false;
+        animator.SetBool("alerted", false);
         animator.SetBool("stunned", true);
+        AS.clip = stun;
+        AS.Play();
         state = State.off;
+        if (play.inHideObject) { play.hidden = true; }
 
         if (co == null)
         {

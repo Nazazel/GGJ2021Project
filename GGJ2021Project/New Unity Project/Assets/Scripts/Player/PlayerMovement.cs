@@ -22,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
     public float respawnTime;
     public float batteryChargeRate;
     public float startingCharge;
+    public bool inHideObject;
     public bool hidden;
     public bool isHidden;
     public bool charging=false;
@@ -76,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
         fall = false;
         ogCharge = batteryChargeRate;
         anim = GetComponent<Animator>();
-
+        inHideObject = false;
         AS = GetComponent<AudioSource>();
         CurrentCollectables = GameManager.count;
         controller = GetComponent<CharacterController2D>();
@@ -305,7 +306,9 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-   
+
+    
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "hurtbox" )
@@ -325,6 +328,7 @@ public class PlayerMovement : MonoBehaviour
         else if (other.tag == "Hide")
         {
             hidden = true;
+            inHideObject = true;
         }
         else if (other.tag == "checkpoint")
         {
@@ -388,6 +392,8 @@ public class PlayerMovement : MonoBehaviour
         if (other.tag == "Hide")
         {
             hidden = false;
+            inHideObject = false;
+
             Unhide();
         }
     }
@@ -459,7 +465,8 @@ public class PlayerMovement : MonoBehaviour
         respawning = true;
         SR.enabled = false;
         rb2d.velocity = Vector3.zero;
-
+        inHideObject = false;
+        hidden = false;
         yield return new WaitForSeconds(respawnTime);
         respawning = false;
         currentBattery = batteryMaxCharge;
