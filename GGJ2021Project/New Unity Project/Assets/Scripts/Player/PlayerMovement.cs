@@ -256,17 +256,22 @@ public class PlayerMovement : MonoBehaviour
                 if (backgroundAudio.clip != patrol)
                 {
                     backgroundAudio.clip = patrol;
+                    backgroundAudio.Play();
+
                 }
                 break;
             case Chase.State.suspicious:
                 backgroundAudio.clip = sus;
+                backgroundAudio.Play();
+
 
                 break;
             case Chase.State.alerted:
                 backgroundAudio.clip = alert;
+                backgroundAudio.Play();
+
                 break;
         }
-        backgroundAudio.Play();
     
     
     }
